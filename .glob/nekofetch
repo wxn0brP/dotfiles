@@ -1,0 +1,2 @@
+#!/bin/bash
+fastfetch --config ~/.fastfetch/config.jsonc -l ~/.fastfetch/logo.png
