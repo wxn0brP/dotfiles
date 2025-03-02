@@ -1,0 +1,75 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+  echo "Please provide a directory name"
+  exit 1
+fi
+
+dir=$1
+
+mkdir -p "$dir/src"
+cd "$dir" || exit
+
+# package.json
+cat > "package.json" <<EOL
+{
+    "name": "$dir",
+    "version": "0.0.1",
+    "main": "dist/index.js",
+    "author": "wxn0brP",
+    "license": "MIT",
+    "private": true, 
+    "type": "module",
+    "scripts": {
+        "build": "tsc && tsc-alias",
+        "start": "node dist/index.js"
+    },
+    "devDependencies": {
+      "@types/node": "^22.12.0",
+      "tsc-alias": "^1.8.10",
+      "typescript": "^5.7.3"
+    }
+}
+EOL
+
+# tsconfig.json
+cat > "tsconfig.json" <<EOL
+{
+    "compilerOptions": {
+        "module": "ES2022",
+        "target": "ES2022",
+        "moduleResolution": "Node",
+        "paths": {},
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "outDir": "./dist",
+        "inlineSourceMap": true
+    },
+    "include": [
+       "./src"
+    ],
+    "exclude": [
+        "node_modules"
+    ],
+    "tsc-alias": {
+        "resolveFullPaths": true,
+        "verbose": false
+    }
+}
+EOL
+
+# valthera.json
+cat > "valthera.json" <<EOL
+{
+    "cmd": "yarn build && yarn start",
+    "watch": [
+        "src"
+    ],
+    "events": {
+        "rs": "clear"
+    }
+}
+EOL
+
+touch "src/index.ts"
+yarn

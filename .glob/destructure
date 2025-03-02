@@ -1,0 +1,13 @@
+#!/bin/bash
+src_dir="$1"
+out_dir="$2"
+
+if [ ! -d "$src_dir" ]; then
+    echo "Source directory does not exist: $src_dir"
+    return 1
+fi
+
+mkdir -p "$out_dir"
+find "$src_dir" -type f -exec cp {} "$out_dir" \;
+
+echo "Copied all files from $src_dir to $out_dir without preserving directory structure."
