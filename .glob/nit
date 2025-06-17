@@ -58,8 +58,8 @@ cat > "tsconfig.json" <<EOL
 }
 EOL
 
-# valthera.json
-cat > "valthera.json" <<EOL
+# suglite.json
+cat > "suglite.json" <<EOL
 {
     "cmd": "yarn build && yarn start",
     "watch": [
