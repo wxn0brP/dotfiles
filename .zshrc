@@ -17,9 +17,11 @@ precmd(){
 
 function custom_prompt {
     PROMPT=""
-#    PROMPT="%F{green}%n%f"
-#    PROMPT+="@" # Separator @
-#    PROMPT+="%F{green}%m"
+
+    if [[ -n "$SSH_CONNECTION" ]]; then
+        PROMPT+="%F{cyan}%m%f "
+    fi
+
     PROMPT+="%F{magenta}%~%f"
 
     if [[ "$newll" == "true" ]]; then

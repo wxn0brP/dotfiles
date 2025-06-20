@@ -1,0 +1,37 @@
+#!/bin/bash
+VIOL="$HOME/.glob/viol"
+
+# Check if a file is provided as an argument
+if [ -z "$1" ]; then
+    yad --error --title="Error" --text="No file provided! Usage: viol-gui <file/s-path>"
+    exit 1
+fi
+
+CATEGORIES=$($VIOL --complete)
+
+# Check if categories are available
+if [ -z "$CATEGORIES" ]; then
+    yad --error --title="Error" --text="Failed to fetch categories!"
+    exit 1
+fi
+
+CATEGORY=$(echo "$CATEGORIES" | yad --list --title="Select Category" --column="Categories" --height=400 --width=400)
+
+# Remove trailing '|' or extra spaces from the selected category
+CATEGORY=$(echo "$CATEGORY" | sed 's/|*$//')
+
+# Check if a category was selected
+if [ -z "$CATEGORY" ]; then
+    yad --error --title="Error" --text="No category selected!"
+    exit 1
+fi
+
+$VIOL $CATEGORY "$@"
+EXIT_CODE=$?
+
+if [ $EXIT_CODE -ne 0 ]; then
+    yad --error --title="Error" --text="An error occurred while running viol! Code: $EXIT_CODE"
+    exit $EXIT_CODE
+fi
+
+exit 0

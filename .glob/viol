@@ -1,0 +1,36 @@
+#!/bin/bash
+
+ARCHIVE_PATH="${HOME}/VioletArchive"
+
+# Function to list categories
+list_categories() {
+  find "$ARCHIVE_PATH" -type d | awk -v path="$ARCHIVE_PATH" '{sub(path, ""); sub(/^\/+/, "-"); if ($0 != "") print}'
+}
+
+# Auto-completion for bash/zsh/fish
+if [[ $1 == "--complete" ]]; then
+  list_categories
+  exit 0
+fi
+
+
+CATEGORY=${1#-}
+shift
+FILES=("$@")
+
+TARGET_PATH="${ARCHIVE_PATH}/${CATEGORY}"
+
+if [[ ! -d "${TARGET_PATH}" ]]; then
+  echo "Category '${CATEGORY}' does not exist in the archive."
+  exit 1
+fi
+
+for FILE in "${FILES[@]}"; do
+  if [[ -e "${FILE}" ]]; then
+    mv "${FILE}" "${TARGET_PATH}"
+    echo "Moved '${FILE}' to '${TARGET_PATH}'."
+  else
+    echo "File '${FILE}' does not exist."
+  fi
+done
+
