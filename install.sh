@@ -16,14 +16,26 @@ install_ohmyzsh() {
   fi
 }
 
+download_plugin() {
+  local repo_url="$1"
+  local plugin_name="$2"
+  local plugin_dir="${ZSH_CUSTOM}/plugins/${plugin_name}"
+
+  if [ ! -d "$plugin_dir" ]; then
+    log "Installing plugin: $plugin_name"
+    git clone "$repo_url" "$plugin_dir"
+  else
+    log "Plugin $plugin_name already installed, skipping..."
+  fi
+}
+
 install_plugins() {
   log "Installing plugins..."
 
-  local autosuggestions_dir="${ZSH_CUSTOM}/plugins/zsh-autosuggestions"
-  local syntax_dir="${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting"
-
-  [[ -d "$autosuggestions_dir" ]] || git clone https://github.com/zsh-users/zsh-autosuggestions "$autosuggestions_dir"
-  [[ -d "$syntax_dir" ]] || git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$syntax_dir"
+  download_plugin "https://github.com/zsh-users/zsh-autosuggestions" "zsh-autosuggestions"
+  download_plugin "https://github.com/zsh-users/zsh-syntax-highlighting" "zsh-syntax-highlighting"
+  download_plugin "https://github.com/grigorii-zander/zsh-npm-scripts-autocomplete" "zsh-npm-scripts-autocomplete"
+  download_plugin "https://github.com/Katrovsky/zsh-ollama-completion" "ollama"
 }
 
 backup_and_copy_dotfiles() {
