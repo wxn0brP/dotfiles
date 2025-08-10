@@ -1,0 +1,67 @@
+#!/bin/bash
+
+FILE="$1"
+
+if [ -z "$FILE" ] || [ ! -x "$FILE" ]; then
+  echo "Usage: $0 /path/to/executable"
+  exit 1
+fi
+
+BASENAME=$(basename "$FILE")
+FULL_PATH=$(readlink -f "$FILE")
+NAME=${BASENAME%.*}
+ICON_PATH=""
+COMMENT=""
+
+FORM=$(yad --form --title="Create .desktop for: $BASENAME" \
+  --field="Application name":TXT "$NAME" \
+  --field="Comment":TXT "Runs $NAME" \
+  --field="Icon path (optional)":TXT "" \
+  --field="Category (e.g. Utility;Game)":TXT "Utility" \
+  --field="Run in terminal?":CHK FALSE \
+  --width=500)
+
+[ $? -ne 0 ] && exit 1
+
+NAME=$(echo "$FORM" | cut -d'|' -f1)
+COMMENT=$(echo "$FORM" | cut -d'|' -f2)
+ICON_PATH=$(echo "$FORM" | cut -d'|' -f3)
+CATEGORY=$(echo "$FORM" | cut -d'|' -f4)
+TERMINAL_FLAG=$(echo "$FORM" | cut -d'|' -f5)
+TERMINAL=$( [ "$TERMINAL_FLAG" = "TRUE" ] && echo "true" || echo "false" )
+
+if [ -z "$ICON_PATH" ]; then
+  DIR=$(dirname "$FILE")
+  mapfile -t ICON_CANDIDATES < <(find "$DIR" -maxdepth 1 -type f \
+    \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.svg" -o -iname "*.ico" \) | sort)
+
+  if [ ${#ICON_CANDIDATES[@]} -eq 1 ]; then
+    ICON_PATH="${ICON_CANDIDATES[0]}"
+  elif [ "${#ICON_CANDIDATES[@]}" -gt 1 ]; then
+    ICON_PATH=$(yad --file --title="Select icon" --filename="${ICON_CANDIDATES[0]}")
+    [ $? -ne 0 ] && ICON_PATH=""
+  fi
+fi
+
+ICON_PATH=$(readlink -f "$ICON_PATH" 2>/dev/null || echo "")
+
+FILENAME="${NAME// /_}.desktop"
+DEST="$HOME/.local/share/applications/$FILENAME"
+
+mkdir -p "$(dirname "$DEST")"
+
+cat <<EOF > "$DEST"
+[Desktop Entry]
+Type=Application
+Name=$NAME
+Comment=$COMMENT
+Exec="$FULL_PATH"
+Icon="$ICON_PATH"
+WorkingDirectory="$(dirname "$FULL_PATH")"
+Terminal=$TERMINAL
+Categories=$CATEGORY;
+EOF
+
+chmod +x "$DEST"
+
+echo "✔️ Created: $DEST"

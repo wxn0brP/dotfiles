@@ -10,24 +10,53 @@ dir=$1
 mkdir -p "$dir/src"
 cd "$dir" || exit
 
+if [ -n "$2" ]; then
+  pkgName=$2
+elif [ "$dir" = "." ]; then
+  pkgName=$(basename "$PWD")
+else
+  pkgName="$dir"
+fi
+
 # package.json
 cat > "package.json" <<EOL
 {
-    "name": "$dir",
+    "name": "$pkgName",
     "version": "0.0.1",
     "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "description": "",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/wxn0brp/$pkgName.git"
+    },
+    "homepage": "https://github.com/wxn0brp/$pkgName",
     "author": "wxn0brP",
     "license": "MIT",
-    "private": true, 
     "type": "module",
     "scripts": {
         "build": "tsc && tsc-alias",
         "start": "node dist/index.js"
     },
     "devDependencies": {
-      "@types/node": "^22.12.0",
-      "tsc-alias": "^1.8.10",
-      "typescript": "^5.7.3"
+        "@types/node": "^22.12.0",
+        "tsc-alias": "^1.8.16",
+        "typescript": "^5.8.3"
+    },
+    "files": [
+        "dist"
+    ],
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js",
+            "default": "./dist/index.js"
+        },
+        "./*": {
+            "types": "./dist/*.d.ts",
+            "import": "./dist/*.js",
+            "default": "./dist/*.js"
+        }
     }
 }
 EOL
@@ -36,14 +65,14 @@ EOL
 cat > "tsconfig.json" <<EOL
 {
     "compilerOptions": {
-        "module": "ES2022",
-        "target": "ES2022",
-        "moduleResolution": "Node",
+        "module": "es2022",
+        "target": "es2024",
+        "moduleResolution": "bundler",
         "paths": {},
         "esModuleInterop": true,
         "skipLibCheck": true,
         "outDir": "./dist",
-        "inlineSourceMap": true
+        "declaration": true
     },
     "include": [
        "./src"
@@ -65,10 +94,75 @@ cat > "suglite.json" <<EOL
     "watch": [
         "src"
     ],
+    "restart_cmd": "clear",
     "events": {
         "rs": "clear"
     }
 }
+EOL
+
+# LICENSE
+cat > "LICENSE" <<EOL
+MIT License
+
+Copyright (c) 2025 wxn0brP
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+EOL
+
+# .gitignore
+cat > ".gitignore" <<EOL
+node_modules
+dist
+.vscode
+.suglite_history
+package-lock.json
+yarn.lock
+EOL
+
+# workflow
+mkdir -p ".github/workflows"
+cat > ".github/workflows/build.yml" <<EOL
+name: Build
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - "*"
+
+  workflow_dispatch:
+
+concurrency:
+  group: build
+  cancel-in-progress: true
+
+jobs:
+  build:
+    uses: wxn0brP/workflow-dist/.github/workflows/build-ts.yml@main
+    with:
+      scriptsHandling: "remove-all"
+      publishToNpm: true
+    
+    secrets:
+      NPM_TOKEN: \${{ secrets.NPM_TOKEN }}
 EOL
 
 touch "src/index.ts"

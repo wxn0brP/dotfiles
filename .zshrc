@@ -64,3 +64,9 @@ ya () {
     yarn add "$@"
 }
 compctl -K _ya_complete ya
+
+br () {
+    bun run "$@"
+}
+compdef _files br
+
