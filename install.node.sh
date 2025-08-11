@@ -67,7 +67,7 @@ show_help() {
 }
 
 main() {
-    local step="all"
+    local step="pkg"
 
     if [[ "$1" == "--step" && -n "$2" ]]; then
         step="$2"

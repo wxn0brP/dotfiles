@@ -9,7 +9,15 @@ chmod +x install.sh
 ./install.sh
 ```
 
-This script installs Oh My Zsh, adds plugins (`zsh-autosuggestions`, `zsh-syntax-highlighting`), copies dotfiles, and backs up your existing `.zshrc` if present.
+This script installs Oh My Zsh, adds plugins, copies dotfiles, and backs up your existing `.zshrc` if present.
+
+```zsh
+chmod +x install.node.sh
+./install.node.sh --step install # install Node.js (nvm)
+./install.node.sh # install pkg
+```
+
+This script installs Node.js and Yarn.
 
 ### 🐱 Nekofetch (Fastfetch Logo)
 
