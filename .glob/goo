@@ -1,0 +1,10 @@
+#!/bin/bash
+
+url=$(git remote -v | awk '$1=="origin" || $1=="origin-gh" {print $2; exit}')
+
+if [ -n "$url" ]; then
+    xdg-open "${url%.git}"
+else
+    echo "origin not found" >&2
+    exit 1
+fi

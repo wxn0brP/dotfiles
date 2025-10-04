@@ -49,6 +49,7 @@ backup_and_copy_dotfiles() {
   cp .zshrc ~/.zshrc
   cp .vars ~/.vars
   cp -r .glob ~/.glob
+  chmod +x ~/.glob/*
   cp -r .fastfetch ~/.fastfetch
 }
 

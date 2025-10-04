@@ -28,9 +28,9 @@ cat > "package.json" <<EOL
     "description": "",
     "repository": {
         "type": "git",
-        "url": "https://github.com/wxn0brp/$pkgName.git"
+        "url": "https://github.com/wxn0brP/$pkgName.git"
     },
-    "homepage": "https://github.com/wxn0brp/$pkgName",
+    "homepage": "https://github.com/wxn0brP/$pkgName",
     "author": "wxn0brP",
     "license": "MIT",
     "type": "module",
@@ -40,9 +40,8 @@ cat > "package.json" <<EOL
         "bun": "bun run src/index.ts"
     },
     "devDependencies": {
-        "@types/node": "^24.3.0",
-        "tsc-alias": "^1.8.16",
-        "typescript": "^5.8.3"
+        "@types/bun": "*",
+        "typescript": "*"
     },
     "files": [
         "dist"
@@ -135,6 +134,7 @@ dist
 .suglite_history
 package-lock.json
 yarn.lock
+bun.lock
 EOL
 
 # workflow
@@ -168,3 +168,4 @@ EOL
 
 touch "src/index.ts"
 yarn
+bumr

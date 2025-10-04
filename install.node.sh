@@ -26,10 +26,10 @@ install_npm() {
 config_npm() {
     if [ ! -f "$HOME/.npmrc" ]; then
         cat > "$HOME/.npmrc" << EOF
-init-author-name=wxn0brP
+init-author-name=____________________
 init-author-email=____________________
 init-version=0.0.1
-//registry.npmjs.org/:_authToken=________________
+//registry.npmjs.org/:_authToken=____________________
 prefix=~/.npm-global
 EOF
     else 
@@ -57,7 +57,8 @@ EOF
 
 install_yarn() {
     yarn global add typescript tsc-alias
-    yarn global add github:wxn0brP/suglite#dist
+    yarn global add github:wxn0brP/suglite
+    yarn global add github:wxn0brP/bumr
     yarn global add github:wxn0brP/ValtheraDB-cli#dist
 }
 

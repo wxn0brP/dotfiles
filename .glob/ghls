@@ -1,0 +1,2 @@
+#!/bin/bash
+gh repo list --limit 150 --visibility public --language typescript $1

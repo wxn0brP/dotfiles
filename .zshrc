@@ -70,3 +70,4 @@ br () {
 }
 compdef _files br
 
+[ -s "/home/ash/.bun/_bun" ] && source "/home/ash/.bun/_bun"
