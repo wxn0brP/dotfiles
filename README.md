@@ -44,6 +44,8 @@ Use any PNG/JPG image — for example, a `nekofetch` catgirl render.
 * `.glob/` — $PATH folder to user scripts
 * `.fastfetch/` — Fastfetch config + logo
 
+[Glob Scripts](glob.md)
+
 ### 📋 Requirements
 
 * `zsh`, `git`, `fastfetch`, `yad`, `bun`
