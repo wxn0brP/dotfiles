@@ -1,8 +1,8 @@
 #!/bin/bash
 
 if [ -z "$1" ]; then
-  echo "Please provide a directory name"
-  exit 1
+ 	echo "Please provide a directory name"
+  	exit 1
 fi
 
 dir=$1
@@ -11,93 +11,93 @@ mkdir -p "$dir/src"
 cd "$dir" || exit
 
 if [ -n "$2" ]; then
-  pkgName=$2
+  	pkgName=$2
 elif [ "$dir" = "." ]; then
-  pkgName=$(basename "$PWD")
+  	pkgName=$(basename "$PWD")
 else
-  pkgName="$dir"
+  	pkgName="$dir"
 fi
 
 # package.json
 cat > "package.json" <<EOL
 {
-    "name": "$pkgName",
-    "version": "0.0.1",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "description": "",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/wxn0brP/$pkgName.git"
-    },
-    "homepage": "https://github.com/wxn0brP/$pkgName",
-    "author": "wxn0brP",
-    "license": "MIT",
-    "type": "module",
-    "scripts": {
-        "build": "tsc && tsc-alias",
-        "start": "node dist/index.js",
-        "bun": "bun run src/index.ts"
-    },
-    "devDependencies": {
-        "@types/bun": "*",
-        "typescript": "*"
-    },
-    "files": [
-        "dist"
-    ],
-    "exports": {
-        ".": {
-            "types": "./dist/index.d.ts",
-            "import": "./dist/index.js",
-            "default": "./dist/index.js"
-        },
-        "./*": {
-            "types": "./dist/*.d.ts",
-            "import": "./dist/*.js",
-            "default": "./dist/*.js"
-        }
-    }
+	"name": "$pkgName",
+	"version": "0.0.1",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"description": "",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/wxn0brP/$pkgName.git"
+	},
+	"homepage": "https://github.com/wxn0brP/$pkgName",
+	"author": "wxn0brP",
+	"license": "MIT",
+	"type": "module",
+	"scripts": {
+		"build": "tsc && tsc-alias",
+		"start": "node dist/index.js",
+		"bun": "bun run src/index.ts"
+	},
+	"devDependencies": {
+		"@types/bun": "*",
+		"typescript": "*"
+	},
+	"files": [
+		"dist"
+	],
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js",
+			"default": "./dist/index.js"
+		},
+		"./*": {
+			"types": "./dist/*.d.ts",
+			"import": "./dist/*.js",
+			"default": "./dist/*.js"
+		}
+	}
 }
 EOL
 
 # tsconfig.json
 cat > "tsconfig.json" <<EOL
 {
-    "compilerOptions": {
-        "module": "es2022",
-        "target": "es2024",
-        "moduleResolution": "bundler",
-        "paths": {},
-        "esModuleInterop": true,
-        "skipLibCheck": true,
-        "outDir": "./dist",
-        "declaration": true
-    },
-    "include": [
-       "./src"
-    ],
-    "exclude": [
-        "node_modules"
-    ],
-    "tsc-alias": {
-        "resolveFullPaths": true,
-        "verbose": false
-    }
+	"compilerOptions": {
+		"module": "es2022",
+		"target": "es2024",
+		"moduleResolution": "bundler",
+		"paths": {},
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"outDir": "./dist",
+		"declaration": true
+	},
+	"include": [
+		"./src"
+	],
+	"exclude": [
+		"node_modules"
+	],
+	"tsc-alias": {
+		"resolveFullPaths": true,
+		"verbose": false
+	}
 }
 EOL
 
 # suglite.json
 cat > "suglite.json" <<EOL
 {
-    "cmd": "yarn build && yarn start",
-    "watch": [
-        "src"
-    ],
-    "restart_cmd": "clear",
-    "events": {
-        "rs": "clear"
-    }
+	"cmd": "yarn build && yarn start",
+	"watch": [
+		"src"
+	],
+	"restart_cmd": "clear",
+	"events": {
+		"rs": "clear"
+	}
 }
 EOL
 
@@ -105,7 +105,7 @@ EOL
 cat > "LICENSE" <<EOL
 MIT License
 
-Copyright (c) 2025 wxn0brP
+Copyright (c) $(date +%Y) wxn0brP
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -156,14 +156,23 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    uses: wxn0brP/workflow-dist/.github/workflows/build-ts.yml@main
-    with:
-      scriptsHandling: "remove-all"
-      publishToNpm: true
-    
-    secrets:
-      NPM_TOKEN: \${{ secrets.NPM_TOKEN }}
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: wxn0brP/rusalka@master
+        with:
+          GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+EOL
+mkdir -p rusalka
+cat > rusalka/build.ts <<EOL
+export const files = ["dist", "package.json", "LICENSE"];
+export const branch = "dist";
+export const preBuildCommands = "";
+export const postBuildCommands = "";
+export const scriptsHandling = "remove-all";
+export const customScripts = [];
+export const publishToNpm = true;
+export const createVersionedBranch = true;
 EOL
 
 touch "src/index.ts"

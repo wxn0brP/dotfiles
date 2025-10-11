@@ -1,0 +1,15 @@
+#!/usr/bin/env bun
+
+import { execSync } from "child_process";
+import { readFileSync } from "fs";
+import { resolve } from "path";
+
+const pkg = JSON.parse(readFileSync("./package.json", "utf-8"));
+const { bin } = pkg as Record<string, string>;
+
+for (const [name, path] of Object.entries(bin)) {
+    if (execSync)
+        execSync(`rm -rf ~/.ing/${name}`);
+    execSync(`ln -s ${resolve(path)} ~/.ing/${name}`);
+    console.log(`${path} -> ~/.ing/${name}`);
+}

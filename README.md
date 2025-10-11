@@ -19,6 +19,13 @@ chmod +x install.node.sh
 
 This script installs Node.js and Yarn.
 
+```zsh
+chmod +x install.ing.sh
+./install.ing.sh
+```
+
+This script installs my tools and scripts into `~/.ing` and `~/.ingr`. (requires Bun)
+
 ### 🐱 Nekofetch (Fastfetch Logo)
 
 To display a custom image with Fastfetch:
@@ -39,4 +46,4 @@ Use any PNG/JPG image — for example, a `nekofetch` catgirl render.
 
 ### 📋 Requirements
 
-* `zsh`, `git`, `fastfetch`, `yad`
+* `zsh`, `git`, `fastfetch`, `yad`, `bun`

@@ -48,6 +48,8 @@ backup_and_copy_dotfiles() {
 
   cp .zshrc ~/.zshrc
   cp .vars ~/.vars
+  mkdir -p ~/.ing
+  mkdir -p ~/VioletArchive
   cp -r .glob ~/.glob
   chmod +x ~/.glob/*
   cp -r .fastfetch ~/.fastfetch

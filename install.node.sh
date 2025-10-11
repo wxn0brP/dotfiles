@@ -57,14 +57,17 @@ EOF
 
 install_yarn() {
     yarn global add typescript tsc-alias
-    yarn global add github:wxn0brP/suglite
-    yarn global add github:wxn0brP/bumr
-    yarn global add github:wxn0brP/ValtheraDB-cli#dist
 }
 
 show_help() {
     echo "Usage: ./install.sh [--step install|pkg]"
     exit 1
+}
+
+check_nvm() {
+    if ! command -v nvm >/dev/null 2>&1; then
+        source ~/.nvm/nvm.sh
+    fi
 }
 
 main() {
@@ -81,6 +84,7 @@ main() {
             install_node
             ;;
         pkg)
+            check_nvm
             config_npm
             config_yarn
             install_npm
