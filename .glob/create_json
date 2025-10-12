@@ -1,0 +1,14 @@
+create_json() {
+  printf '{'
+  first=1
+  for a in "$@"; do
+    key="${a%%=*}"
+    val="${a#*=}"
+    val="${val//\\/\\\\}"
+    val="${val//\"/\\\"}"
+    if [ $first -eq 0 ]; then printf ','; fi
+    printf '"%s":"%s"' "$key" "$val"
+    first=0
+  done
+  printf '}'
+}

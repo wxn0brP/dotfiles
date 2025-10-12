@@ -40,4 +40,5 @@ NO_COLOR="\[\033[0m\]"
 
 PS1="${BLUE}\u${NO_COLOR}@${LIGHT_GREEN}\h ${YELLOW}\$(prompt_path) ${RED}\$${NO_COLOR} "
 
+source ~/dotfiles/.vars
 source ~/.vars
