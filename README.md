@@ -1,42 +1,55 @@
-## My Dotfiles
+# My Dotfiles
 
 Minimal ZSH setup with plugins and Fastfetch.
 
-### 🔧 Installation
+## 🔧 Installation
+
+### 💜 Tui for interactive setup:
 
 ```zsh
-chmod +x install.sh
+./tui.sh
+```
+
+### 💜 Manual setup
+
+Basic setup
+
+```zsh
 ./install.sh
 ```
 
-This script installs Oh My Zsh, adds plugins, copies dotfiles, and backs up your existing `.zshrc` if present.
+Install my tools and scripts into `~/.ing` and `~/.ingr`. (requires Bun)
 
 ```zsh
-chmod +x install.node.sh
+./install.ing.sh
+```
+
+Install Node.js, Yarn, etc.
+
+```zsh
 ./install.node.sh --step install # install Node.js (nvm)
 ./install.node.sh # install pkg
 ```
 
-This script installs Node.js and Yarn.
+## 🐱 Nekofetch
 
-```zsh
-chmod +x install.ing.sh
-./install.ing.sh
-```
+To display a **custom image** (like a neko/catgirl render) instead of the default logo in Fastfetch, you need to place the image file in the correct location and name it precisely.
 
-This script installs my tools and scripts into `~/.ing` and `~/.ingr`. (requires Bun)
+### Setup Instructions
 
-### 🐱 Nekofetch (Fastfetch Logo)
+1.  Choose any PNG or JPG image you want to use.
 
-To display a custom image with Fastfetch:
+2.  Save this image as **`logo.png`**.
 
-```bash
-~/.fastfetch/logo.png
-```
+3.  Place the `logo.png` file directly into your Fastfetch configuration directory:
 
-Use any PNG/JPG image — for example, a `nekofetch` catgirl render.
+    ```bash
+    ~/.fastfetch/logo.png
+    ```
 
-### 📦 Contents
+Fastfetch will automatically detect and display this image when run.
+
+## 📦 Contents
 
 * `.zshrc` — main ZSH config (preferred)
 * `.bashrc` — main Bash config
@@ -44,8 +57,14 @@ Use any PNG/JPG image — for example, a `nekofetch` catgirl render.
 * `.glob/` — $PATH folder to user scripts
 * `.fastfetch/` — Fastfetch config + logo
 
-[Glob Scripts](glob.md)
+### 📚 Docs
 
-### 📋 Requirements
+- [Glob Scripts](glob.md)
 
-* `zsh`, `git`, `fastfetch`, `yad`, `bun`
+## 📋 Requirements
+
+* `zsh`
+* `git`
+* `fastfetch`
+* `yad`
+* `bun`
