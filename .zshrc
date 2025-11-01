@@ -53,9 +53,6 @@ _viol_complete() {
 }
 compctl -K _viol_complete viol
 
-alias uuu="yay --noconfirm"
-export SUDO_EDITOR=kwrite
-
 _ya_complete() {
     local LAST_ARG="${words[-1]}"
     if [[ ${#LAST_ARG} -lt 4 ]]; then # do not complete short names
