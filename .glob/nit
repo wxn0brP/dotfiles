@@ -176,6 +176,7 @@ export const scriptsHandling = "remove-all";
 export const customScripts = [];
 export const publishToNpm = true;
 export const createVersionedBranch = true;
+export const typeDocs = 1; // 0 off, 1 if publishToNpm, 2 always
 EOL
 
 touch "src/index.ts"
