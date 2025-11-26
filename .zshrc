@@ -47,6 +47,7 @@ export newll=false
 PROMPT='$(custom_prompt)'
 source ~/dotfiles/.vars
 source ~/.vars
+source ~/dotfiles/auto-update.sh
 
 _viol_complete() {
     reply=($(viol --complete) $(ls))

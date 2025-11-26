@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 ingr server
 ingr suglite
 ingr bumr
