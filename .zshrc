@@ -47,7 +47,9 @@ export newll=false
 PROMPT='$(custom_prompt)'
 source ~/dotfiles/.vars
 source ~/.vars
-source ~/dotfiles/auto-update.sh
+if [[ -z "$NO_DOTFILES_UPDATE" ]]; then
+    source ~/dotfiles/auto-update.sh
+fi
 
 _viol_complete() {
     reply=($(viol --complete) $(ls))
