@@ -25,7 +25,8 @@ download_plugin() {
 		log "Installing plugin: $plugin_name"
 		git clone "$repo_url" "$plugin_dir"
 	else
-		log "Plugin $plugin_name already installed, skipping..."
+		log "Plugin $plugin_name already installed, updating..."
+		git -C "$plugin_dir" pull
 	fi
 }
 
