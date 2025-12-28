@@ -31,6 +31,29 @@ Install Node.js, Yarn, etc.
 ./install.node.sh # install pkg
 ```
 
+## Scripts
+
+### `recommended.sh`
+
+This script helps install a predefined list of recommended applications.
+
+**Usage:**
+
+*   **Interactive Mode:** Run the script without arguments to open an interactive menu where you can select which application(s) to install.
+    ```bash
+    ./recommended.sh
+    ```
+
+*   **Install All:** Install all recommended applications at once.
+    ```bash
+    ./recommended.sh all
+    ```
+
+*   **Install Specific Apps:** Provide the names of the applications you want to install as arguments.
+    ```bash
+    ./recommended.sh Lyth Zhiva
+    ```
+
 ## 🐱 Nekofetch
 
 To display a **custom image** (like a neko/catgirl render) instead of the default logo in Fastfetch, you need to place the image file in the correct location and name it precisely.
