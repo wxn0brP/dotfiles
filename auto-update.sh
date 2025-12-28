@@ -28,6 +28,7 @@ check_dotfiles_update() {
     read -q "REPLY?Do you want to update now? (y/n) "
     echo
     if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+      cd "$DOTFILES_DIR"
       "$UPDATE_SCRIPT"
     fi
   fi
