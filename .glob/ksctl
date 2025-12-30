@@ -1,0 +1,26 @@
+#!/bin/zsh
+
+# ksctl - simple systemctl wrapper
+
+if [[ $# -lt 2 ]]; then
+  echo "Usage: ksctl <unit> <operation>"
+  echo "Operations: s=status, r=restart, e=enable, d=disable, t=stop, x=start"
+  exit 1
+fi
+
+UNIT=$1
+OP=$2
+
+case $OP in
+  s) sudo systemctl status $UNIT ;;
+  r) sudo systemctl restart $UNIT ;;
+  e) sudo systemctl enable $UNIT ;;
+  d) sudo systemctl disable $UNIT ;;
+  t) sudo systemctl stop $UNIT ;;
+  x) sudo systemctl start $UNIT ;;
+  *)
+    echo "Unknown operation: $OP"
+    echo "Use: s=status, r=restart, e=enable, d=disable, t=stop, x=start"
+    exit 1
+    ;;
+esac

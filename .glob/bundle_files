@@ -1,0 +1,125 @@
+#!/usr/bin/env bun
+
+import { glob } from "glob";
+import { readFile, stat, writeFile } from "node:fs/promises";
+import { relative, resolve } from "node:path";
+import { parseArgs } from "node:util";
+
+interface BundleOptions {
+    output: string;
+    files: string[];
+    baseDir?: string;
+}
+
+async function bundleFiles(options: BundleOptions): Promise<void> {
+    const { output, files: filePatterns, baseDir = process.cwd() } = options;
+
+    const files = (await Promise.all(filePatterns.map((pattern) => glob(pattern)))).flat();
+
+    console.log(`Bundling ${files.length} files to ${output}`);
+
+    const bundleContent: string[] = [];
+
+    for (const filePath of files) {
+        try {
+            const absolutePath = resolve(filePath);
+            const relativePath = baseDir
+                ? relative(baseDir, absolutePath)
+                : filePath;
+
+            const fileStat = await stat(absolutePath);
+            if (!fileStat.isFile()) {
+                console.warn(`Warning: ${filePath} (not a file)`);
+                continue;
+            }
+
+            const content = await readFile(absolutePath, "utf-8");
+
+            bundleContent.push(`--- ${relativePath}`);
+            bundleContent.push(content);
+            bundleContent.push("");
+
+            console.log(`Added: ${relativePath}`);
+        } catch (error) {
+            console.error(
+                `Error ${filePath}:`,
+                error instanceof Error ? error.message : String(error),
+            );
+        }
+    }
+
+    await writeFile(output, bundleContent.join("\n"), "utf-8");
+    console.log(`Wrote bundle to: ${output}`);
+    console.log(`Bundle size: ${bundleContent.length} lines`);
+}
+
+function parseCommandLineArgs(): BundleOptions {
+    try {
+        const { values, positionals } = parseArgs({
+            options: {
+                output: {
+                    type: "string",
+                    short: "o",
+                },
+                base: {
+                    type: "string",
+                    short: "b",
+                },
+                help: {
+                    type: "boolean",
+                    short: "h",
+                },
+            },
+            allowPositionals: true,
+        });
+
+        if (values.help || positionals.length === 0) {
+            showHelp();
+            process.exit(0);
+        }
+
+        const outputFile = values.output || positionals[0];
+        const files = values.output ? positionals : positionals.slice(1);
+
+        if (files.length === 0) {
+            console.error("Please provide at least one file to bundle");
+            showHelp();
+            process.exit(1);
+        }
+
+        return {
+            output: outputFile,
+            files,
+            baseDir: values.base,
+        };
+    } catch (error) {
+        console.error(
+            "Error parsing arguments:",
+            error instanceof Error ? error.message : String(error),
+        );
+        showHelp();
+        process.exit(1);
+    }
+}
+
+function showHelp(): void {
+    console.log(`
+Bundle Files Tool
+
+Usage:
+  bundle_files [OPTION] <output_file> <input_files...>
+  bundle_files <input_files...> -o <output_file>
+
+Examples:
+  bundle_files all.txt *.md
+  bundle_files -o all.txt src/**/*.js
+
+Options:
+  -o, --output <file>       Output file (alternative to a first argument)
+  -b, --base <directory>    Base directory for relative paths (default: cwd)
+  -h, --help                Show this help
+`);
+}
+
+const options = parseCommandLineArgs();
+await bundleFiles(options);
