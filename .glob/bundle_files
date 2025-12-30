@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 
 import { glob } from "glob";
-import { readFile, stat, writeFile } from "node:fs/promises";
+import { appendFile, readFile, stat, writeFile } from "node:fs/promises";
 import { relative, resolve } from "node:path";
 import { parseArgs } from "node:util";
 
@@ -14,11 +14,13 @@ interface BundleOptions {
 async function bundleFiles(options: BundleOptions): Promise<void> {
     const { output, files: filePatterns, baseDir = process.cwd() } = options;
 
-    const files = (await Promise.all(filePatterns.map((pattern) => glob(pattern)))).flat();
+    const globPromises = filePatterns.map((pattern) => glob(pattern));
+    const globResults = await Promise.all(globPromises);
+    const files = globResults.flat().map((file) => file);
 
     console.log(`Bundling ${files.length} files to ${output}`);
 
-    const bundleContent: string[] = [];
+    await writeFile(output, "", "utf-8");
 
     for (const filePath of files) {
         try {
@@ -35,9 +37,10 @@ async function bundleFiles(options: BundleOptions): Promise<void> {
 
             const content = await readFile(absolutePath, "utf-8");
 
-            bundleContent.push(`--- ${relativePath}`);
-            bundleContent.push(content);
-            bundleContent.push("");
+            await appendFile(output, `--------- file: ${relativePath}
+${content}
+
+`, "utf-8");
 
             console.log(`Added: ${relativePath}`);
         } catch (error) {
@@ -48,9 +51,9 @@ async function bundleFiles(options: BundleOptions): Promise<void> {
         }
     }
 
-    await writeFile(output, bundleContent.join("\n"), "utf-8");
     console.log(`Wrote bundle to: ${output}`);
-    console.log(`Bundle size: ${bundleContent.length} lines`);
+    const size = (await stat(output)).size;
+    console.log(`Bundle size: ${Math.round(size / 1024)} KB`);
 }
 
 function parseCommandLineArgs(): BundleOptions {
