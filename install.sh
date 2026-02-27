@@ -54,7 +54,9 @@ backup_and_copy_dotfiles() {
 	mkdir -p ~/.ing
 	mkdir -p ~/VioletArchive
 	mkdir -p ~/.glob
-	touch ~/.vars
+	if [ ! -f ~/.vars ]; then
+		printf "expected_user='%s'\n" "$USER" > ~/.vars
+	fi
 	chmod +x .glob/*
 	cp -r .fastfetch ~/.fastfetch
 	echo "source ~/dotfiles/.zshrc" > ~/.zshrc

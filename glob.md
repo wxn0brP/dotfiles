@@ -9,6 +9,9 @@ Copies all files from a source directory to a destination directory without pres
 
 Usage: `destructure <source_dir> <destination_dir>`
 
+### gdd
+alias for `git diff | tee | wl-copy`
+
 ### ghls
 Lists the user's GitHub repositories that are public and written in TypeScript, with a configurable limit of 150 repositories.
 

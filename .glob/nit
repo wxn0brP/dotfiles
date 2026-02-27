@@ -7,7 +7,7 @@ fi
 
 dir=$1
 
-mkdir -p "$dir/src"
+mkdir -p "$dir"
 cd "$dir" || exit
 
 if [ -n "$2" ]; then
@@ -18,167 +18,22 @@ else
   	pkgName="$dir"
 fi
 
-# package.json
-cat > "package.json" <<EOL
-{
-	"name": "$pkgName",
-	"version": "0.0.1",
-	"main": "dist/index.js",
-	"types": "dist/index.d.ts",
-	"description": "",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/wxn0brP/$pkgName.git"
-	},
-	"homepage": "https://github.com/wxn0brP/$pkgName",
-	"author": "wxn0brP",
-	"license": "MIT",
-	"type": "module",
-	"scripts": {
-		"build": "tsc && tsc-alias",
-		"start": "node dist/index.js",
-		"bun": "bun run src/index.ts"
-	},
-	"devDependencies": {
-		"@types/bun": "*",
-		"typescript": "*"
-	},
-	"files": [
-		"dist"
-	],
-	"exports": {
-		".": {
-			"types": "./dist/index.d.ts",
-			"import": "./dist/index.js",
-			"default": "./dist/index.js"
-		},
-		"./*": {
-			"types": "./dist/*.d.ts",
-			"import": "./dist/*.js",
-			"default": "./dist/*.js"
-		}
-	}
-}
-EOL
+dots="$HOME/dotfiles/nit"
 
-# tsconfig.json
-cat > "tsconfig.json" <<EOL
-{
-	"compilerOptions": {
-		"module": "esnext",
-		"target": "es2024",
-		"moduleResolution": "bundler",
-		"paths": {},
-		"esModuleInterop": true,
-		"skipLibCheck": true,
-		"outDir": "./dist",
-		"declaration": true
-	},
-	"include": [
-		"./src"
-	],
-	"exclude": [
-		"node_modules"
-	],
-	"tsc-alias": {
-		"resolveFullPaths": true,
-		"verbose": false
-	}
-}
-EOL
-
-# suglite.json
-cat > "suglite.json5" <<EOL
-{
-	"cmd": "yarn build && yarn start",
-	"watch": [
-		"src"
-	],
-	"restart_cmd": "clear",
-	"events": {
-		"rs": "clear"
-	}
-}
-EOL
-
-# LICENSE
-cat > "LICENSE" <<EOL
-MIT License
-
-Copyright (c) $(date +%Y) wxn0brP
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-EOL
-
-# .gitignore
-cat > ".gitignore" <<EOL
-node_modules
-dist
-.vscode
-.suglite_history
-package-lock.json
-yarn.lock
-bun.lock
-EOL
-
-# workflow
 mkdir -p ".github/workflows"
-cat > ".github/workflows/build.yml" <<EOL
-name: Build
+mkdir -p "rusalka"
+mkdir -p "src"
 
-on:
-  push:
-    branches:
-      - master
-    tags:
-      - "*"
+cp "$dots/.github/workflows/build.yml" ".github/workflows/build.yml"
+cp "$dots/rusalka/build.ts" "rusalka/build.ts"
+cp "$dots/src/index.ts" "src/index.ts"
 
-  workflow_dispatch:
+cp "$dots/.gitignore" ".gitignore"
+cp "$dots/suglite.json5" "suglite.json5"
+cp "$dots/tsconfig.json" "tsconfig.json"
 
-concurrency:
-  group: build
-  cancel-in-progress: true
+date=$(date +%Y) envsubst '$date' < "$dots/LICENSE" > "LICENSE"
+pkgName=$pkgName envsubst '$pkgName' < "$dots/package.json" > "package.json"
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      id-token: write
-    steps:
-      - uses: wxn0brP/rusalka@master
-        with:
-          GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
-EOL
-mkdir -p rusalka
-cat > rusalka/build.ts <<EOL
-export const files = ["dist", "package.json", "LICENSE"];
-export const branch = "dist";
-export const preBuildCommands = "";
-export const postBuildCommands = "";
-export const scriptsHandling = "remove-all";
-export const customScripts = [];
-export const publishToNpm = true;
-export const createVersionedBranch = true;
-export const typeDocs = 1; // 0 off, 1 if publishToNpm, 2 always
-EOL
-
-touch "src/index.ts"
-yarn
+bun install
 bumr

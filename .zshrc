@@ -67,14 +67,9 @@ _ya_complete() {
 }
 
 ya () {
-    yarn add "$@"
+    bun add "$@"
 }
 compctl -K _ya_complete ya
-
-br () {
-    bun run "$@"
-}
-compdef _files br
 
 [ -s "/home/ash/.bun/_bun" ] && source "/home/ash/.bun/_bun"
 

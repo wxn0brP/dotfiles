@@ -45,8 +45,8 @@ main_menu() {
         print_colored $WHITE "Select an option:"
         echo "1. Basic Setup"
         echo "2. Install Node.js"
-        echo "3. Configure Node"
-        echo "4. Install Bun"
+        echo "3. Install Bun"
+        echo "4. Install Bun optional dependencies"
         echo "5. Install tools"
         echo "6. Install missing dotfiles plugins"
         echo "0. Exit"
@@ -58,13 +58,13 @@ main_menu() {
                 execute_command "./install.sh" "Basic Setup"
                 ;;
             2)
-                execute_command "./install.node.sh --step install" "Install Node.js"
+                execute_command "./install.node.sh" "Install Node.js"
                 ;;
             3)
-                execute_command "./install.node.sh --step pkg" "Configure Node"
+                execute_command "curl -fsSL https://bun.sh/install | bash" "Install Bun"
                 ;;
             4)
-                execute_command "curl -fsSL https://bun.sh/install | bash" "Install Bun"
+                execute_command "bun add -g typescript tsc-alias" "Install Bun optional dependencies"
                 ;;
             5)
                 execute_command "./install.ing.sh" "Install tools"

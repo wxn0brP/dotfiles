@@ -24,18 +24,17 @@ Install my tools and scripts into `~/.ing` and `~/.ingr`. (requires Bun)
 ./install.ing.sh
 ```
 
-Install Node.js, Yarn, etc.
+Install Node.js 25 into `~/.nvm`.
 
 ```zsh
-./install.node.sh --step install # install Node.js (nvm)
-./install.node.sh # install pkg
+./install.node.sh
 ```
 
 ## Scripts
 
 ### `recommended.sh`
 
-This script helps install a predefined list of recommended applications.
+This script helps install a predefined list of recommended applications/tools.
 
 **Usage:**
 
@@ -83,11 +82,12 @@ Fastfetch will automatically detect and display this image when run.
 ### 📚 Docs
 
 - [Glob Scripts](glob.md)
+- [Environment Variables](vars.md)
 
 ## 📋 Requirements
 
 * `zsh`
 * `git`
-* `fastfetch`
-* `yad`
-* `bun`
+* `bun` (optional; install via `./tui.sh`; required by multiple scripts and tools)
+* `fastfetch` (optional, used by nekofetch)
+* `yad` (optional, used by viol)
