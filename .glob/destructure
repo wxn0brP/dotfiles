@@ -2,6 +2,11 @@
 src_dir="$1"
 out_dir="$2"
 
+if [ "$#" -ne 2 ]; then
+    echo "Usage: $0 <source_directory> <output_directory>"
+    return 1
+fi
+
 if [ ! -d "$src_dir" ]; then
     echo "Source directory does not exist: $src_dir"
     return 1

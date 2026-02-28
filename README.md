@@ -1,6 +1,6 @@
 # My Dotfiles
 
-Minimal ZSH setup with plugins and Fastfetch.
+ZSH setup with plugins, tools and scripts.
 
 ## 🔧 Installation
 
