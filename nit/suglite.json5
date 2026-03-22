@@ -1,5 +1,5 @@
 {
-    cmd: "bun run build & bun run start",
+    cmd: "bun run build && bun run start",
     watch: [
         "src"
     ],
