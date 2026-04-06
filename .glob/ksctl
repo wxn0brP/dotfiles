@@ -2,9 +2,11 @@
 
 # ksctl - simple systemctl wrapper
 
+HELP="Operations: s=status, r=restart, e=enable, d=disable, t=stop, x=start, l=logs, ll=logs cmd"
+
 if [[ $# -lt 2 ]]; then
   echo "Usage: ksctl <unit> <operation>"
-  echo "Operations: s=status, r=restart, e=enable, d=disable, t=stop, x=start"
+  echo "$HELP"
   exit 1
 fi
 
@@ -18,9 +20,11 @@ case $OP in
   d) sudo systemctl disable $UNIT ;;
   t) sudo systemctl stop $UNIT ;;
   x) sudo systemctl start $UNIT ;;
+  l) journalctl -f -u $UNIT ;;
+  ll) echo "journalctl -f -u $UNIT" ;;
   *)
     echo "Unknown operation: $OP"
-    echo "Use: s=status, r=restart, e=enable, d=disable, t=stop, x=start"
+    echo "$HELP"
     exit 1
     ;;
 esac

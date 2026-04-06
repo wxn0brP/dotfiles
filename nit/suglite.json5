@@ -1,10 +1,6 @@
 {
-    cmd: "bun run build && bun run start",
+    cmd: "tsc --noEmit && bun run build && bun run start",
     watch: [
         "src"
-    ],
-    restart_cmd: "clear",
-    events: {
-        rs: "clear"
-    }
+    ]
 }
