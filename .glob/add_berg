@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -e
+
+if ! git rev-parse --git-dir > /dev/null 2>&1; then
+    echo "[ERROR] Not in a git repository."
+    exit 1
+fi
+
+ORIGIN_URL=$(git remote get-url origin 2>/dev/null)
+
+if [[ -z "$ORIGIN_URL" ]]; then
+    echo "[ERROR] Break remote 'origin'."
+    exit 1
+fi
+
+echo "GitHub : $ORIGIN_URL"
+
+BERG_URL="${ORIGIN_URL//github.com/codeberg.org}"
+echo "Codeberg: $BERG_URL"
+
+git remote remove berg 2>/dev/null || true
+git remote add berg "$BERG_URL"
+
+echo "Remote 'berg' updated."
+
+git push berg --follow-tags
