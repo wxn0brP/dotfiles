@@ -1,0 +1,29 @@
+#compdef ksctl
+
+_ksctl() {
+  local -a ops
+  ops=(
+    's:status'
+    'r:restart'
+    'e:enable'
+    'd:disable'
+    't:stop'
+    'x:start'
+    'l:logs (args passed to journalctl, default -f)'
+    'g:grep pattern'
+  )
+
+  if [[ $CURRENT -eq 2 ]]; then
+    _units
+  else
+    _describe 'operation' ops
+  fi
+}
+
+_units() {
+  local -a units
+  units=($(systemctl list-unit-files --type=service --no-pager 2>/dev/null | awk 'NR>1 && $2!="not-found" {print $1}'))
+  compadd -a units
+}
+
+_ksctl "$@"

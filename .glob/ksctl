@@ -1,17 +1,23 @@
 #!/bin/zsh
 
-# ksctl - simple systemctl wrapper
+# ksctl - simple systemctl & journalctl wrapper
 
-HELP="Operations: s=status, r=restart, e=enable, d=disable, t=stop, x=start, l=logs, ll=logs cmd"
+HELP="Operations:
+  s=status  r=restart  e=enable  d=disable  t=stop  x=start
+  l=logs (args passed to journalctl, default -f)
+  g=grep <pattern> (filter logs)"
 
 if [[ $# -lt 2 ]]; then
-  echo "Usage: ksctl <unit> <operation>"
+  echo "Usage: ksctl <unit> <operation> [args...]"
   echo "$HELP"
   exit 1
 fi
 
 UNIT=$1
-OP=$2
+shift
+OP=$1
+shift
+EXTRA=("$@")
 
 case $OP in
   s) sudo systemctl status $UNIT ;;
@@ -20,8 +26,19 @@ case $OP in
   d) sudo systemctl disable $UNIT ;;
   t) sudo systemctl stop $UNIT ;;
   x) sudo systemctl start $UNIT ;;
-  l) journalctl -f -u $UNIT ;;
-  ll) echo "journalctl -f -u $UNIT" ;;
+  l)
+    if [[ ${#EXTRA[@]} -eq 0 ]]; then
+      journalctl -u "$UNIT" -f
+    else
+      journalctl -u "$UNIT" "${EXTRA[@]}"
+    fi
+    ;;
+  g)
+    journalctl -u "$UNIT" | grep -- "${EXTRA[@]}"
+    ;;
+  ll)
+    echo journalctl -u "$UNIT" "${EXTRA[@]}"
+    ;;
   *)
     echo "Unknown operation: $OP"
     echo "$HELP"

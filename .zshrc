@@ -1,3 +1,4 @@
+export DISABLE_UPDATE_PROMPT="true"
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="robbyrussell"
 plugins=(
@@ -10,12 +11,11 @@ plugins=(
   ollama
 )
 source $ZSH/oh-my-zsh.sh
-fpath=(~/.oh-my-zsh/custom/completions $fpath)
+fpath=(~/.oh-my-zsh/custom/completions ~/dotfiles $fpath)
 # autoload -Uz vcs_info
 autoload -Uz colors && colors
 autoload -Uz compinit && compinit
 zstyle ':omz:update' mode auto
-ZSH_CUSTOM_AUTOUPDATE_QUIET=true
 
 # precmd(){
 #     vcs_info
@@ -70,8 +70,6 @@ ya () {
     bun add "$@"
 }
 compctl -K _ya_complete ya
-
-[ -s "/home/ash/.bun/_bun" ] && source "/home/ash/.bun/_bun"
 
 add_npm_bin_to_path() {
   local npm_bin="./node_modules/.bin"

@@ -6,10 +6,10 @@
     "description": "",
     "repository": {
         "type": "git",
-        "url": "https://github.com/wxn0brP/$pkgName.git"
+        "url": "https://github.com/$NIT_USER/$pkgName.git"
     },
-    "homepage": "https://github.com/wxn0brP/$pkgName",
-    "author": "wxn0brP",
+    "homepage": "https://github.com/$NIT_USER/$pkgName",
+    "author": "$NIT_USER",
     "license": "MIT",
     "type": "module",
     "scripts": {

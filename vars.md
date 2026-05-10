@@ -34,6 +34,14 @@ The following directories are added to `PATH` in `.vars`:
 | `~/.local/bin` | User's local binaries |
 | `~/.zhiva/bin` | Zhiva project binaries |
 
+## Nit Project Generator
+
+### `.glob/nit`
+
+| Variable | Default | Purpose | Location |
+|----------|---------|---------|----------|
+| `NIT_USER` | `$(whoami)` | Git user/author name for generated projects | `.glob/nit` |
+
 ## Notes
 
 - All variables are sourced from `~/dotfiles/.vars` and `~/.vars` in both shells
