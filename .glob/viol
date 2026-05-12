@@ -33,4 +33,3 @@ for FILE in "${FILES[@]}"; do
     echo "File '${FILE}' does not exist."
   fi
 done
-

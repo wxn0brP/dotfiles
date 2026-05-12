@@ -125,4 +125,4 @@ Options:
 }
 
 const options = parseCommandLineArgs();
-await bundleFiles(options);
+bundleFiles(options);
