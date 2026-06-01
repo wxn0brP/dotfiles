@@ -1,6 +1,6 @@
-# .glob Scripts
+# glob Scripts
 
-This directory contains various utility scripts that are available globally when `.glob` is added to the PATH.
+This directory contains various utility scripts that are available globally when `glob` is added to the PATH.
 
 ## Script Descriptions
 
@@ -33,6 +33,7 @@ Usage: `destructure <source_dir> <destination_dir>`
 alias for `git diff | tee | wl-copy`
 
 ### ghls
+
 Lists the user's GitHub repositories that are public and written in TypeScript, with a configurable limit of 150 repositories.
 
 Usage: `ghls [search_query]`

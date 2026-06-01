@@ -27,7 +27,7 @@ The following directories are added to `PATH` in `.vars`:
 | Directory | Purpose |
 |-----------|---------|
 | `~/.glob` | User's global utility scripts |
-| `~/dotfiles/.glob` | Dotfiles utility scripts (destructure, viol, nit, etc.) |
+| `~/dotfiles/glob` | Dotfiles utility scripts (destructure, viol, nit, etc.) |
 | `~/.ing` | Globally linked npm executables |
 | `~/.bun/bin` | Bun package manager binaries |
 | `~/.npm-global/bin` | Global npm packages |
@@ -36,11 +36,11 @@ The following directories are added to `PATH` in `.vars`:
 
 ## Nit Project Generator
 
-### `.glob/nit`
+### `glob/nit`
 
 | Variable | Default | Purpose | Location |
 |----------|---------|---------|----------|
-| `NIT_USER` | `$(whoami)` | Git user/author name for generated projects | `.glob/nit` |
+| `NIT_USER` | `$(whoami)` | Git user/author name for generated projects | `glob/nit` |
 
 ## Notes
 

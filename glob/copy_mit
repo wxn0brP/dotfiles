@@ -1,0 +1,6 @@
+#!/bin/bash
+
+NIT_USER=${NIT_USER:-$(whoami)}
+dots="$HOME/dotfiles/nit"
+
+date=$(date +%Y) NIT_USER=$NIT_USER envsubst '$date $NIT_USER' < "$dots/LICENSE" > "LICENSE"

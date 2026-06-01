@@ -76,7 +76,7 @@ Fastfetch will automatically detect and display this image when run.
 * `.zshrc` — main ZSH config (preferred)
 * `.bashrc` — main Bash config
 * `.vars` — environment variables
-* `.glob/` — $PATH folder to user scripts
+* `glob/` — $PATH folder to user scripts
 * `.fastfetch/` — Fastfetch config + logo
 
 ### 📚 Docs

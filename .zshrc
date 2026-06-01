@@ -12,14 +12,10 @@ plugins=(
 )
 source $ZSH/oh-my-zsh.sh
 fpath=(~/.oh-my-zsh/custom/completions ~/dotfiles $fpath)
-# autoload -Uz vcs_info
 autoload -Uz colors && colors
 autoload -Uz compinit && compinit
 zstyle ':omz:update' mode auto
 
-# precmd(){
-#     vcs_info
-# }
 
 function custom_prompt {
     PROMPT=""

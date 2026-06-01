@@ -57,7 +57,7 @@ backup_and_copy_dotfiles() {
 	if [ ! -f ~/.vars ]; then
 		printf "expected_user='%s'\n" "$USER" > ~/.vars
 	fi
-	chmod +x .glob/*
+	chmod +x glob/*
 	cp -r .fastfetch ~/.fastfetch
 	echo "source ~/dotfiles/.zshrc" > ~/.zshrc
 	echo "source ~/dotfiles/.bashrc" > ~/.bashrc

@@ -1,5 +1,5 @@
 #!/bin/bash
-VIOL="$HOME/.glob/viol"
+VIOL="$HOME/dotfiles/glob/viol"
 
 # Check if a file is provided as an argument
 if [ -z "$1" ]; then
