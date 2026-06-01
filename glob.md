@@ -16,6 +16,12 @@ Bundles multiple files into a single output file with annotated file paths, usin
 
 Usage: `bundle_files <output_file> <input_patterns...>` or `bundle_files <input_patterns...> -o <output_file>`
 
+### copy_mit
+
+Copies the MIT license to the current directory.
+
+Usage: `copy_mit`
+
 ### create_json
 
 Shell function that creates a JSON object from `key=value` arguments.
@@ -56,11 +62,12 @@ Clones and installs a project from the wxn0brP GitHub repositories into `~/.ingr
 
 Usage: `ingr [project_name]` - If no project name is provided, it updates all projects.
 
-### ksctl
+### ksctl (systemctl + journalctl) & ksorc (OpenRC)
 
-Wrapper around `systemctl` and `journalctl` with short operation shortcuts.
+Wrapper around `systemctl` and `journalctl` / `rc-service` with short operation shortcuts.
 
 Usage: `ksctl <unit> <operation> [args...]`
+Usage: `ksorc <unit> <operation> [args...]`
 
 Operations: `s` (status), `r` (restart), `e` (enable), `d` (disable), `t` (stop), `x` (start), `l` (logs), `g` (grep logs)
 

@@ -1,0 +1,50 @@
+#!/bin/zsh
+
+# ksorc - simple OpenRC rc-service & log wrapper
+
+HELP="Operations:
+  s=status  r=restart  e=enable  d=disable  t=stop  x=start
+  l=logs (tail -f /var/log/messages, or custom log path as arg)
+  g=grep <pattern> (filter /var/log/messages)"
+
+if [[ $# -lt 2 ]]; then
+  echo "Usage: ksorc <service> <operation> [args...]"
+  echo "$HELP"
+  exit 1
+fi
+
+SVC=$1
+shift
+OP=$1
+shift
+EXTRA=("$@")
+
+LOGFILE=${SVC_LOGFILE:-/var/log/messages}
+
+case $OP in
+  s) sudo rc-service "$SVC" status ;;
+  r) sudo rc-service "$SVC" restart ;;
+  e) sudo rc-update add "$SVC" ;;
+  d) sudo rc-update del "$SVC" ;;
+  t) sudo rc-service "$SVC" stop ;;
+  x) sudo rc-service "$SVC" start ;;
+  l)
+    if [[ ${#EXTRA[@]} -eq 0 ]]; then
+      tail -f "$LOGFILE"
+    else
+      tail -f "${EXTRA[1]}"
+    fi
+    ;;
+  g)
+    grep -- "${EXTRA[@]}" "$LOGFILE"
+    ;;
+  ll)
+    echo "Log file: $LOGFILE"
+    echo "rc-service $SVC ${EXTRA[@]}"
+    ;;
+  *)
+    echo "Unknown operation: $OP"
+    echo "$HELP"
+    exit 1
+    ;;
+esac
