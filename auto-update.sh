@@ -2,7 +2,14 @@
 
 DOTFILES_DIR="$HOME/dotfiles"
 UPDATE_SCRIPT="$DOTFILES_DIR/update.sh"
-LAST_CHECK_FILE="/tmp/.dotfiles_last_check"
+
+if [[ -w "/tmp" ]]; then
+  LAST_CHECK_FILE="/tmp"
+else
+  LAST_CHECK_FILE="$HOME"
+fi
+
+LAST_CHECK_FILE="$LAST_CHECK_FILE/.dotfiles_last_check"
 
 CHECK_INTERVAL=$((60 * 60))
 

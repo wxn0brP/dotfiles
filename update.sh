@@ -2,8 +2,10 @@
 
 cd $HOME/dotfiles
 git pull
-./install.sh --step plugins
-./install.ing.sh
 ingr
+
+if [[ -z "$NO_DOTFILES_PLUGINS_UPDATE" ]]; then
+    ./install.sh --step plugins
+fi
 
 echo "💜 Done!"

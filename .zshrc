@@ -16,7 +16,6 @@ autoload -Uz colors && colors
 autoload -Uz compinit && compinit
 zstyle ':omz:update' mode auto
 
-
 function custom_prompt {
     PROMPT=""
 
@@ -43,9 +42,13 @@ export newll=false
 PROMPT='$(custom_prompt)'
 source ~/dotfiles/.vars
 source ~/.vars
+
 if [[ -z "$NO_DOTFILES_UPDATE" ]]; then
     source ~/dotfiles/auto-update.sh
 fi
+
+[ -s "$HOME/.bun/bun.zsh" ] && source "$HOME/.bun/bun.zsh"
+[ -s "$HOME/.zhiva/scripts/_zhiva" ] && source "$HOME/.zhiva/scripts/_zhiva"
 
 _viol_complete() {
     reply=($(viol --complete) $(ls))
@@ -68,10 +71,13 @@ ya () {
 compctl -K _ya_complete ya
 
 add_npm_bin_to_path() {
-  local npm_bin="./node_modules/.bin"
-  if [ -d "$npm_bin" ]; then
-    export PATH="$npm_bin:$PATH"
-  fi
+    if [ -z "$NO_ADD_NPM_BIN_TO_PATH" ]; then
+        return
+    fi
+    local npm_bin="./node_modules/.bin"
+    if [ -d "$npm_bin" ]; then
+        export PATH="$npm_bin:$PATH"
+    fi
 }
 
 autoload -U add-zsh-hook

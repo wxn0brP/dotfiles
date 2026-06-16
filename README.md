@@ -2,15 +2,15 @@
 
 ZSH setup with plugins, tools and scripts.
 
-## 🔧 Installation
+## Installation
 
-### 💜 Tui for interactive setup:
+### Tui for interactive setup:
 
 ```zsh
 ./tui.sh
 ```
 
-### 💜 Manual setup
+### Manual setup
 
 Basic setup
 
@@ -53,7 +53,7 @@ This script helps install a predefined list of recommended applications/tools.
     ./recommended.sh Lyth Zhiva
     ```
 
-## 🐱 Nekofetch
+## Nekofetch
 
 To display a **custom image** (like a neko/catgirl render) instead of the default logo in Fastfetch, you need to place the image file in the correct location and name it precisely.
 
@@ -71,20 +71,12 @@ To display a **custom image** (like a neko/catgirl render) instead of the defaul
 
 Fastfetch will automatically detect and display this image when run.
 
-## 📦 Contents
-
-* `.zshrc` — main ZSH config (preferred)
-* `.bashrc` — main Bash config
-* `.vars` — environment variables
-* `glob/` — $PATH folder to user scripts
-* `.fastfetch/` — Fastfetch config + logo
-
-### 📚 Docs
+### Docs
 
 - [Glob Scripts](glob.md)
 - [Environment Variables](vars.md)
 
-## 📋 Requirements
+## Requirements
 
 * `zsh`
 * `git`

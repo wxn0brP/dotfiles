@@ -37,6 +37,9 @@ install_plugins() {
 	download_plugin "https://github.com/zsh-users/zsh-syntax-highlighting" "zsh-syntax-highlighting"
 	download_plugin "https://github.com/grigorii-zander/zsh-npm-scripts-autocomplete" "zsh-npm-scripts-autocomplete"
 	download_plugin "https://github.com/Katrovsky/zsh-ollama-completion" "ollama"
+
+	log "Installing bun completions..."
+	curl -fsSL https://raw.githubusercontent.com/oven-sh/bun/HEAD/completions/bun.zsh > ~/.bun/bun.zsh
 }
 
 backup_and_copy_dotfiles() {

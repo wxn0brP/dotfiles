@@ -9,6 +9,9 @@ This document describes the essential environment variables used across the dotf
 | Variable | Value | Purpose | Location |
 |----------|-------|---------|----------|
 | `newll` | `false` | Controls whether prompt shows on new line | `.zshrc` |
+| `NO_DOTFILES_UPDATE` | unset | Prevents the dotfiles from being updated | `.zshrc` |
+| `NO_DOTFILES_PLUGINS_UPDATE` | unset | Prevents the dotfiles zsh plugins from being updated | `.zshrc` |
+| `NO_ADD_NPM_BIN_TO_PATH` | unset | Prevents the `add_npm_bin_to_path` function from adding local npm binaries to `PATH` | `.zshrc` |
 
 ## Editor Configuration
 

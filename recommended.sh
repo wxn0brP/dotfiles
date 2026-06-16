@@ -10,7 +10,6 @@ function install() {
 
 declare -A apps
 apps=(
-    [Lyth]="install.sh"
     [Zhiva]="install/prepare.sh"
 )
 
