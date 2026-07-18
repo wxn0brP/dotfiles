@@ -19,6 +19,7 @@ else
 fi
 
 NIT_USER=${NIT_USER:-$(whoami)}
+L_NIT_USER=$(echo "$NIT_USER" | tr '[:upper:]' '[:lower:]')
 dots="$HOME/dotfiles/nit"
 
 mkdir -p ".github/workflows"
@@ -33,8 +34,22 @@ cp "$dots/.gitignore" ".gitignore"
 cp "$dots/suglite.json5" "suglite.json5"
 cp "$dots/tsconfig.json" "tsconfig.json"
 
-date=$(date +%Y) NIT_USER=$NIT_USER envsubst '$date $NIT_USER' < "$dots/LICENSE" > "LICENSE"
-pkgName=$pkgName NIT_USER=$NIT_USER envsubst '$pkgName $NIT_USER' < "$dots/package.json" > "package.json"
+render() {
+	local input=$(echo "$dots/$1")
+    local output=$1
+    shift 1
+
+    env "$@" envsubst < "$input" > "$output"
+}
+
+render package.json \
+    NIT_USER="$NIT_USER" \
+    L_NIT_USER="$L_NIT_USER" \
+    pkgName="$pkgName"
+
+render LICENSE \
+    date="$(date +%Y)" \
+    NIT_USER="$NIT_USER"
 
 bun install
 bumr

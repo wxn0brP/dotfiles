@@ -1,5 +1,5 @@
 {
-    "name": "$pkgName",
+    "name": "@$L_NIT_USER/$pkgName",
     "version": "0.0.1",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -19,7 +19,7 @@
     },
     "devDependencies": {
         "@types/bun": "*",
-        "typescript": "^6"
+        "typescript": "^7"
     },
     "files": [
         "dist"

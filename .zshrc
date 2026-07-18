@@ -70,16 +70,9 @@ ya () {
 }
 compctl -K _ya_complete ya
 
-add_npm_bin_to_path() {
-    if [ -z "$NO_ADD_NPM_BIN_TO_PATH" ]; then
-        return
-    fi
-    local npm_bin="./node_modules/.bin"
-    if [ -d "$npm_bin" ]; then
-        export PATH="$npm_bin:$PATH"
-    fi
-}
-
 autoload -U add-zsh-hook
-add-zsh-hook chpwd add_npm_bin_to_path
-add_npm_bin_to_path
+
+for f in ~/dotfiles/glob/*.ts; do
+  name="${f:t:r}"
+  alias $name="$f"
+done

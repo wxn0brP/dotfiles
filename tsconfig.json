@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "module": "es2022",
+        "target": "es2022",
+        "moduleResolution": "bundler",
+        "paths": {},
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "outDir": "./dist",
+        "declaration": true,
+        "strict": false,
+        "rootDir": "./glob",
+        "types": [
+            "bun-types"
+        ]
+    },
+    "include": [
+        "./glob"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
