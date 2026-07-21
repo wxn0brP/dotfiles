@@ -6,107 +6,109 @@ import { relative, resolve } from "node:path";
 import { parseArgs } from "node:util";
 
 interface BundleOptions {
-    output: string;
-    files: string[];
-    baseDir?: string;
+	output: string;
+	files: string[];
+	baseDir?: string;
 }
 
 async function bundleFiles(options: BundleOptions): Promise<void> {
-    const { output, files: filePatterns, baseDir = process.cwd() } = options;
+	const { output, files: filePatterns, baseDir = process.cwd() } = options;
 
-    const globPromises = filePatterns.map((pattern) => glob(pattern));
-    const globResults = await Promise.all(globPromises);
-    const files = globResults.flat().map((file) => file);
+	const globPromises = filePatterns.map(pattern => glob(pattern));
+	const globResults = await Promise.all(globPromises);
+	const files = globResults.flat().map(file => file);
 
-    console.log(`Bundling ${files.length} files to ${output}`);
+	console.log(`Bundling ${files.length} files to ${output}`);
 
-    await writeFile(output, "", "utf-8");
+	await writeFile(output, "", "utf-8");
 
-    for (const filePath of files) {
-        try {
-            const absolutePath = resolve(filePath);
-            const relativePath = baseDir
-                ? relative(baseDir, absolutePath)
-                : filePath;
+	for (const filePath of files) {
+		try {
+			const absolutePath = resolve(filePath);
+			const relativePath = baseDir ? relative(baseDir, absolutePath) : filePath;
 
-            const fileStat = await stat(absolutePath);
-            if (!fileStat.isFile()) {
-                console.warn(`Warning: ${filePath} (not a file)`);
-                continue;
-            }
+			const fileStat = await stat(absolutePath);
+			if (!fileStat.isFile()) {
+				console.warn(`Warning: ${filePath} (not a file)`);
+				continue;
+			}
 
-            const content = await readFile(absolutePath, "utf-8");
+			const content = await readFile(absolutePath, "utf-8");
 
-            await appendFile(output, `--------- file: ${relativePath}
+			await appendFile(
+				output,
+				`--------- file: ${relativePath}
 ${content}
 
-`, "utf-8");
+`,
+				"utf-8",
+			);
 
-            console.log(`Added: ${relativePath}`);
-        } catch (error) {
-            console.error(
-                `Error ${filePath}:`,
-                error instanceof Error ? error.message : String(error),
-            );
-        }
-    }
+			console.log(`Added: ${relativePath}`);
+		} catch (error) {
+			console.error(
+				`Error ${filePath}:`,
+				error instanceof Error ? error.message : String(error),
+			);
+		}
+	}
 
-    console.log(`Wrote bundle to: ${output}`);
-    const size = (await stat(output)).size;
-    console.log(`Bundle size: ${Math.round(size / 1024)} KB`);
+	console.log(`Wrote bundle to: ${output}`);
+	const size = (await stat(output)).size;
+	console.log(`Bundle size: ${Math.round(size / 1024)} KB`);
 }
 
 function parseCommandLineArgs(): BundleOptions {
-    try {
-        const { values, positionals } = parseArgs({
-            options: {
-                output: {
-                    type: "string",
-                    short: "o",
-                },
-                base: {
-                    type: "string",
-                    short: "b",
-                },
-                help: {
-                    type: "boolean",
-                    short: "h",
-                },
-            },
-            allowPositionals: true,
-        });
+	try {
+		const { values, positionals } = parseArgs({
+			options: {
+				output: {
+					type: "string",
+					short: "o",
+				},
+				base: {
+					type: "string",
+					short: "b",
+				},
+				help: {
+					type: "boolean",
+					short: "h",
+				},
+			},
+			allowPositionals: true,
+		});
 
-        if (values.help || positionals.length === 0) {
-            showHelp();
-            process.exit(0);
-        }
+		if (values.help || positionals.length === 0) {
+			showHelp();
+			process.exit(0);
+		}
 
-        const outputFile = values.output || positionals[0];
-        const files = values.output ? positionals : positionals.slice(1);
+		const outputFile = values.output || positionals[0];
+		const files = values.output ? positionals : positionals.slice(1);
 
-        if (files.length === 0) {
-            console.error("Please provide at least one file to bundle");
-            showHelp();
-            process.exit(1);
-        }
+		if (files.length === 0) {
+			console.error("Please provide at least one file to bundle");
+			showHelp();
+			process.exit(1);
+		}
 
-        return {
-            output: outputFile,
-            files,
-            baseDir: values.base,
-        };
-    } catch (error) {
-        console.error(
-            "Error parsing arguments:",
-            error instanceof Error ? error.message : String(error),
-        );
-        showHelp();
-        process.exit(1);
-    }
+		return {
+			output: outputFile,
+			files,
+			baseDir: values.base,
+		};
+	} catch (error) {
+		console.error(
+			"Error parsing arguments:",
+			error instanceof Error ? error.message : String(error),
+		);
+		showHelp();
+		process.exit(1);
+	}
 }
 
 function showHelp(): void {
-    console.log(`
+	console.log(`
 Bundle Files Tool
 
 Usage:

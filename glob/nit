@@ -29,6 +29,7 @@ mkdir -p "src"
 cp "$dots/.github/workflows/build.yml" ".github/workflows/build.yml"
 cp "$dots/rusalka/build.ts" "rusalka/build.ts"
 cp "$dots/src/index.ts" "src/index.ts"
+cp "$dots/biome.json" "biome.json"
 
 cp "$dots/.gitignore" ".gitignore"
 cp "$dots/suglite.json5" "suglite.json5"
