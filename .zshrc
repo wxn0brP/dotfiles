@@ -16,6 +16,12 @@ autoload -Uz colors && colors
 autoload -Uz compinit && compinit
 zstyle ':omz:update' mode auto
 
+setopt APPEND_HISTORY
+setopt SHARE_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_SAVE_NO_DUPS
+
 function custom_prompt {
     PROMPT=""
 
