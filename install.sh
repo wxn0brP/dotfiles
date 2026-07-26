@@ -46,12 +46,27 @@ backup_and_copy_dotfiles() {
 	log "Copying dotfiles..."
 
 	if [ -f "$HOME/.zshrc" ]; then
-		mv "$HOME/.zshrc" "$HOME/.zshrc.dot.bak-w"
-		log ".zshrc renamed to .zshrc.dot.bak-w"
+		read "?Found .zshrc. Back it up and replace? (Y/n) "
+		echo
+		if [[ ! "$REPLY" =~ ^[Nn]$ ]]; then
+			mv "$HOME/.zshrc" "$HOME/.zshrc.dot.bak-w"
+			log ".zshrc renamed to .zshrc.dot.bak-w"
+			echo "source ~/dotfiles/.zshrc" > "$HOME/.zshrc"
+		fi
+	else
+		echo "source ~/dotfiles/.zshrc" > "$HOME/.zshrc"
 	fi
+
 	if [ -f "$HOME/.bashrc" ]; then
-		mv "$HOME/.bashrc" "$HOME/.bashrc.dot.bak-w"
-		log ".bashrc renamed to .bashrc.dot.bak-w"
+		read "?Found .bashrc. Back it up and replace? (Y/n) "
+		echo
+		if [[ ! "$REPLY" =~ ^[Nn]$ ]]; then
+			mv "$HOME/.bashrc" "$HOME/.bashrc.dot.bak-w"
+			log ".bashrc renamed to .bashrc.dot.bak-w"
+			echo "source ~/dotfiles/.bashrc" > "$HOME/.bashrc"
+		fi
+	else
+		echo "source ~/dotfiles/.bashrc" > "$HOME/.bashrc"
 	fi
 
 	mkdir -p ~/.ing
@@ -61,9 +76,27 @@ backup_and_copy_dotfiles() {
 		printf "expected_user='%s'\n" "$USER" > ~/.vars
 	fi
 	chmod +x glob/*
-	cp -r .fastfetch ~/.fastfetch
-	echo "source ~/dotfiles/.zshrc" > ~/.zshrc
-	echo "source ~/dotfiles/.bashrc" > ~/.bashrc
+
+	if [ -d ~/.fastfetch ]; then
+		read "?.fastfetch exists. Overwrite with dotfiles config? (Y/n) "
+		echo
+		if [[ ! "$REPLY" =~ ^[Nn]$ ]]; then
+			cp -r .fastfetch ~/.fastfetch
+		fi
+	else
+		read "?Copy fastfetch config to ~/.fastfetch? (Y/n) "
+		echo
+		if [[ ! "$REPLY" =~ ^[Nn]$ ]]; then
+			cp -r .fastfetch ~/.fastfetch
+		fi
+	fi
+
+	read "?Enable auto-update checks on shell start? (Y/n) "
+	echo
+	if [[ "$REPLY" =~ ^[Nn]$ ]]; then
+		echo 'export NO_DOTFILES_UPDATE=1' >> ~/.vars
+		log "Auto-update disabled (NO_DOTFILES_UPDATE set in ~/.vars)"
+	fi
 }
 
 show_help() {
