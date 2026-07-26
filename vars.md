@@ -20,8 +20,32 @@ This document describes the essential environment variables used across the dotf
 | Variable | Value | Purpose | Location |
 |----------|-------|---------|----------|
 | `SUDO_EDITOR` | `kwrite` | Editor used by sudo when editing files | `.vars` |
-| `VISUAL` | `nano` | Preferred visual editor | `.vars` |
-| `EDITOR` | `nano` | Default command-line editor | `.vars` |
+| `VISUAL` | `micro` | Preferred visual editor | `.vars` |
+| `EDITOR` | `micro` | Default command-line editor | `.vars` |
+
+## Shell Aliases
+
+The following aliases and functions are defined in `.vars`:
+
+| Alias | Target | Description |
+|-------|--------|-------------|
+| `cd..` | `cd ..` | Go up one directory |
+| `ll` | `ls -al` | List all files with details |
+| `cls` | `clear` | Clear terminal |
+| `c` | `vscodium .` | Open current directory in VSCodium |
+| `ce` | `c && exit` | Open VSCodium and exit shell |
+| `py` | `python` | Python shortcut |
+| `g` | `./girl.sh` | Run girl script |
+| `cg` | `chmod +x ./girl.sh` | Make girl.sh executable |
+| `ng` | `nano ./girl.sh` | Edit girl.sh in nano |
+| `p` | `cd ~/Desktop` | Go to Desktop |
+| `code` | `vscodium` | Open VSCodium |
+| `exot` | `exit` | Exit shell (typo variant) |
+| `exut` | `exit` | Exit shell (typo variant) |
+| `ipc` | `ip -br addr` | Show IP addresses |
+| `dots-up` | `git pull` in dotfiles | Update dotfiles repository |
+| `nit` | `nitl` | Alias for library project generator |
+| `uuu` | `paru -Syu` | Full system update via paru |
 
 ## PATH Extensions
 

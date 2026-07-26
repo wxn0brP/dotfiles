@@ -10,11 +10,23 @@ Adds a `berg` remote pointing to the Codeberg mirror of a GitHub repository and 
 
 Usage: `add_berg` (run inside a git repo with a GitHub `origin` remote)
 
+### apply-pr
+
+Fetches and applies diffs from open Renovate pull requests on the current GitHub repository using the GitHub API.
+
+Usage: `apply-pr` (requires `GITHUB_TOKEN` or `GH_TOKEN` for higher rate limits)
+
 ### bundle_files
 
 Bundles multiple files into a single output file with annotated file paths, using glob patterns.
 
 Usage: `bundle_files <output_file> <input_patterns...>` or `bundle_files <input_patterns...> -o <output_file>`
+
+### cct
+
+Generates a filtered Cloudflare Tunnel config from a `config-make.yml` template and starts the tunnel. Filters ingress rules by service subdomain. Pass a port number to override the `f` (forward) service.
+
+Usage: `cct <service...> [port]`
 
 ### copy_mit
 
@@ -95,11 +107,31 @@ Displays system information using `fastfetch` with a custom configuration and lo
 
 Usage: `nekofetch`
 
-### nit
+### nitf
 
-Initializes a new TypeScript project with a standard structure and configuration, including `package.json`, `tsconfig.json`, and default files/directories.
+Initializes a new **frontend** TypeScript project with interactive prompts for optional features (suglite server, SCSS, flanker-ui, gen.js).
 
-Usage: `nit <directory_name> [package_name]`
+Usage: `nitf <directory_name> [package_name]`
+
+### nitl
+
+Initializes a new **library** TypeScript project with build pipeline (tsc + tsc-alias) and GitHub CI workflow.
+
+Usage: `nitl <directory_name> [package_name]`
+
+This is what the `nit` alias points to (defined in `.vars`).
+
+### nits
+
+Initializes a new **server** TypeScript project with interactive prompts for optional modules (database via Valthera, FalconFrame).
+
+Usage: `nits <directory_name> [package_name]`
+
+### nsv
+
+Bumps the npm package version using `standard-version`. Supports alpha (`a`), beta (`b`), patch (`p`), and minor (`m`) releases with optional increment and dry-run mode.
+
+Usage: `nsv [a|b|p|m] [increment] [-d]`
 
 ### viol
 
