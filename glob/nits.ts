@@ -70,7 +70,7 @@ const devDeps: Record<string, string> = {
 };
 
 if (hasDb) devDeps["@wxn0brp/db"] = "^0.112.0";
-if (hasFf) devDeps["@wxn0brp/falcon-frame"] = "^0.5.6";
+if (hasFf) devDeps["@wxn0brp/falcon-frame"] = "^0.9.2";
 
 if (!hasDb && !hasFf) {
 	template = "plain";
