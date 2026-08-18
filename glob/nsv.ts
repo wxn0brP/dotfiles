@@ -19,6 +19,12 @@ for (const arg of args) {
 		case "b":
 			releaseType = "beta";
 			break;
+		case "ap":
+			releaseType = "ap";
+			break;
+		case "bp":
+			releaseType = "bp";
+			break;
 		case "p":
 			releaseType = "patch";
 			break;
@@ -44,12 +50,18 @@ const currentVersion = JSON.parse(
 	readFileSync("package.json", "utf-8"),
 ).version;
 
-let newVersion: string;
+let newVersion: string = "";
 const [version, tag] = currentVersion.split("-");
 let [major, minor, patch] = version.split(".").map(Number);
 
 switch (releaseType) {
 	case "":
+		break;
+	case "ap":
+		newVersion = `${major}.${minor + increment}.0-alpha.0`;
+		break;
+	case "bp":
+		newVersion = `${major}.${minor + increment}.0-beta.0`;
 		break;
 	case "patch":
 		newVersion = `${major}.${minor}.${patch + increment}`;
