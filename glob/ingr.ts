@@ -22,7 +22,7 @@ if (name) {
 		execSync("bun install", {
 			stdio: "inherit",
 		});
-		execSync("ing", {
+		execSync("ing.ts", {
 			stdio: "inherit",
 		});
 		process.chdir("..");
@@ -36,7 +36,7 @@ if (name) {
 		stdio: "inherit",
 	});
 	console.log(`Installed ${name}`);
-	execSync("ing", {
+	execSync("ing.ts", {
 		stdio: "inherit",
 	});
 } else {
@@ -54,7 +54,7 @@ if (name) {
 			stdio: "inherit",
 		});
 		console.log(`Installed ${dir}`);
-		execSync("ing", {
+		execSync("ing.ts", {
 			stdio: "inherit",
 		});
 		process.chdir("..");

@@ -42,7 +42,7 @@ for i in {1..$#projects}; do
 	if [[ $selected[$i] -eq 1 ]]; then
 		echo ""
 		echo ">>> Installing ${projects[$i]}..."
-		ingr "${projects[$i]}"
+		command ingr.ts "${projects[$i]}"
 	fi
 done
 echo ""
