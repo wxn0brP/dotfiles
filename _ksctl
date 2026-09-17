@@ -22,7 +22,7 @@ _ksctl() {
 
 _units() {
   local -a units
-  units=($(systemctl list-unit-files --type=service --no-pager 2>/dev/null | awk 'NR>1 && $2!="not-found" {print $1}'))
+  units=($(systemctl list-unit-files --type=service --no-pager 2>/dev/null | awk 'NR>1 && $2!="not-found" {print $1}' | sed 's/\.service$//'))
   compadd -a units
 }
 

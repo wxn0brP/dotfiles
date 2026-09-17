@@ -10,10 +10,9 @@ plugins=(
   zsh-npm-scripts-autocomplete
   ollama
 )
-source $ZSH/oh-my-zsh.sh
 fpath=(~/.oh-my-zsh/custom/completions ~/dotfiles $fpath)
+source $ZSH/oh-my-zsh.sh
 autoload -Uz colors && colors
-autoload -Uz compinit && compinit
 zstyle ':omz:update' mode auto
 
 setopt APPEND_HISTORY
@@ -77,8 +76,3 @@ ya () {
 compctl -K _ya_complete ya
 
 autoload -U add-zsh-hook
-
-for f in ~/dotfiles/glob/*.ts; do
-  name="${f:t:r}"
-  alias $name="$f"
-done

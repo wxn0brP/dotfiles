@@ -17,6 +17,9 @@ mkdirSync(isSubFront ? "front" : dir, {
 	recursive: true,
 });
 process.chdir(isSubFront ? "front" : dir);
+mkdirSync("public", {
+	recursive: true,
+});
 
 const pkgName =
 	Bun.argv[3] ||
@@ -35,7 +38,10 @@ let hasFlankerDialog: boolean;
 let hasScss: boolean;
 let hasGenJs: boolean;
 
-cpSync(join(dots, "front", "front", "index.html"), `index.html`);
+cpSync(
+	join(dots, "front", "front", "index.html"),
+	join("public", "index.html"),
+);
 cpSync(join(dots, "front", "front", "tsconfig.json"), `tsconfig.json`);
 if (hasFlankerUi) {
 	const tsconfig = JSON.parse(readFileSync("tsconfig.json", "utf-8"));

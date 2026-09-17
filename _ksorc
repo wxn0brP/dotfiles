@@ -1,0 +1,29 @@
+#compdef ksorc
+
+_ksorc() {
+  local -a ops
+  ops=(
+    's:status'
+    'r:restart'
+    'e:enable'
+    'd:disable'
+    't:stop'
+    'x:start'
+    'l:logs (tail -f $SVC_LOGFILE or /var/log/messages)'
+    'g:grep pattern'
+  )
+
+  if [[ $CURRENT -eq 2 ]]; then
+    _services
+  else
+    _describe 'operation' ops
+  fi
+}
+
+_services() {
+  local -a services
+  services=(${$(ls /etc/init.d/ 2>/dev/null)})
+  compadd -a services
+}
+
+_ksorc "$@"

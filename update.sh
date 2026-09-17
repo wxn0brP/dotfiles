@@ -2,6 +2,7 @@
 
 cd $HOME/dotfiles
 git pull
+./update-link.sh
 ingr.ts
 
 if [[ -z "$NO_DOTFILES_PLUGINS_UPDATE" ]]; then

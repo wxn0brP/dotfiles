@@ -32,9 +32,8 @@ check_dotfiles_update() {
 
   if [[ "$behind_count" -gt 0 ]]; then
     echo "Updates available for dotfiles."
-    read -q "REPLY?Do you want to update now? (y/n) "
-    echo
-    if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+    read "REPLY?Do you want to update now? (Y/n) "
+    if [[ -z "$REPLY" || "$REPLY" =~ ^[Yy]$ ]]; then
       cd "$DOTFILES_DIR"
       "$UPDATE_SCRIPT"
     fi

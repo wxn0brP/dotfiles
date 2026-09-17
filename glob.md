@@ -144,3 +144,11 @@ Usage: `viol <category> <file/s>`
 A GUI wrapper for the `viol` script that allows selecting a category from a list to move files into the Violet Archive.
 
 Usage: `viol-gui <file_path>`
+
+### wbcs
+
+Creates a systemd unit file at `/etc/systemd/system/w-<name>.service` for a Bun project in the current directory. Pulls the user/group from the current shell user, detects the Bun binary at `~/.bun/bin/bun` (with `which` fallback), and warns if `src/index.ts` is missing. If `name` is omitted, the current directory's basename is used.
+
+Usage: `wbcs [name]`
+
+After writing, run `sudo systemctl daemon-reload && sudo systemctl enable --now w-<name>.service` to activate.
