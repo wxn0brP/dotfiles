@@ -5,6 +5,19 @@ import { cpSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import * as os from "os";
 import { basename, join, resolve } from "path";
 
+if (Bun.argv.includes("--help") || Bun.argv.includes("-h")) {
+	console.log(`Usage: nitl <dir> [pkg]
+
+Initialize a new library TypeScript project.
+
+Arguments:
+  dir    Directory name
+  pkg    Package name (defaults to directory name)
+
+Includes: tsc + tsc-alias build pipeline, GitHub CI workflow`);
+	process.exit(0);
+}
+
 const dir = Bun.argv[2];
 if (!dir) {
 	console.log("Please provide a directory name");

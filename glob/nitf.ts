@@ -5,6 +5,32 @@ import { cpSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { userInfo } from "os";
 import { basename, join, resolve } from "path";
 
+if (Bun.argv.includes("--help") || Bun.argv.includes("-h")) {
+	console.log(`Usage: nitf <dir> [pkg]
+
+Initialize a new frontend TypeScript project.
+
+Arguments:
+  dir    Directory name (use "." to create a sub-project in front/)
+  pkg    Package name (defaults to directory name)
+
+Options:
+  -h, --help             Show this help message
+  -n, --non-interactive  Skip prompts, use flags below (for scripts)
+      --server           Enable built-in server in suglite
+      --flanker-ui       Add @wxn0brp/flanker-ui
+      --flanker-dialog   Add @wxn0brp/flanker-dialog (requires --flanker-ui)
+      --scss             Add SCSS (sass)
+      --gen-js           Add gen.js (auto-import modules)`);
+	process.exit(0);
+}
+
+const nonInteractive = Bun.argv.includes("--non-interactive") || Bun.argv.includes("-n");
+
+function hasFlag(name: string): boolean {
+	return Bun.argv.includes(`--${name}`);
+}
+
 const dir = Bun.argv[2];
 if (!dir) {
 	console.log("Please provide a directory name");
@@ -88,6 +114,15 @@ async function ask(question: string, default_ = false): Promise<any> {
 }
 
 async function prompt() {
+	if (nonInteractive) {
+		useServer = hasFlag("server");
+		hasFlankerUi = hasFlag("flanker-ui");
+		hasFlankerDialog = hasFlag("flanker-dialog");
+		hasScss = hasFlag("scss");
+		hasGenJs = hasFlag("gen-js");
+		return;
+	}
+
 	if (isSubFront) {
 		const pattern = "front/src/**/*";
 		const srcPattern = "src/**/*";

@@ -4,6 +4,30 @@ import { $ } from "bun";
 import { cpSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import * as os from "os";
 import { basename, join, resolve } from "path";
+
+if (Bun.argv.includes("--help") || Bun.argv.includes("-h")) {
+	console.log(`Usage: nits <dir> [pkg]
+
+Initialize a new server TypeScript project.
+
+Arguments:
+  dir    Directory name
+  pkg    Package name (defaults to directory name)
+
+Options:
+  -h, --help             Show this help message
+  -n, --non-interactive  Skip prompts, use flags below (for scripts)
+      --db               Add DB (Valthera)
+      --ff               Add FalconFrame`);
+	process.exit(0);
+}
+
+const nonInteractive = Bun.argv.includes("--non-interactive") || Bun.argv.includes("-n");
+
+function hasFlag(name: string): boolean {
+	return Bun.argv.includes(`--${name}`);
+}
+
 const dir = Bun.argv[2];
 if (!dir) {
 	console.log("Please provide a directory name");
@@ -59,8 +83,16 @@ function ask(question: string, default_ = false): Promise<boolean> {
 
 console.log("\n--- nits: Configure server project ---\n");
 
-const hasDb = await ask("Add DB (Valthera)?");
-const hasFf = await ask("Add FalconFrame?");
+let hasDb: boolean;
+let hasFf: boolean;
+
+if (nonInteractive) {
+	hasDb = hasFlag("db");
+	hasFf = hasFlag("ff");
+} else {
+	hasDb = await ask("Add DB (Valthera)?");
+	hasFf = await ask("Add FalconFrame?");
+}
 
 let template: string;
 const devDeps: Record<string, string> = {

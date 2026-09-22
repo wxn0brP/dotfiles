@@ -2,39 +2,67 @@
 
 projects=(server suglite bumr lang-diff pressure domowik)
 selected=(1 1 1 1 1 1)
+cursor=1
+
+stty_orig=$(stty -g)
+cleanup() {
+	stty $stty_orig
+	echo -ne '\e[?25h'
+}
+trap cleanup EXIT INT TERM
+
+stty -icanon -echo
 
 while true; do
-	echo ""
+	clear
+	echo -ne '\e[2J\e[H'
+	echo -ne '\e[?25l'
+	
 	echo "=== Install Tools ==="
+	echo "up/down navigate, space toggle, enter confirm, q quit"
 	echo ""
+	
 	for i in {1..$#projects}; do
 		mark="[ ]"
-		[[ $selected[$i] -eq 1 ]] && mark="[x]"
-		echo "  $i. $mark $projects[$i]"
+		[[ $selected[$i] -eq 1 ]] && mark="[✓]"
+		
+		if [[ $i -eq $cursor ]]; then
+			echo -e "\e[7m> $mark ${projects[$i]}\e[0m"
+		else
+			echo "  $mark ${projects[$i]}"
+		fi
 	done
+	
 	echo ""
-	echo "  a. Install all selected"
-	echo "  q. Quit"
-	echo ""
-	read "?Toggle number, or a/q: " choice
-
-	case $choice in
-		a|A)
+	
+	read -k 1 key
+	case $key in
+		$'\e')
+			read -k 2 rest
+			case $rest in
+				'[A')
+					((cursor > 1)) && ((cursor--))
+					;;
+				'[B')
+					((cursor < $#projects)) && ((cursor++))
+					;;
+			esac
+			;;
+		' ')
+			selected[$cursor]=$(( 1 - selected[$cursor] ))
+			;;
+		$'\n')
 			break
 			;;
-		q|Q)
+		'q'|'Q')
+			echo -ne '\e[2J\e[H'
 			echo "Installation cancelled."
 			exit 0
 			;;
-		*)
-			if [[ $choice =~ ^[0-9]+$ ]] && [[ $choice -ge 1 ]] && [[ $choice -le $#projects ]]; then
-				selected[$choice]=$(( 1 - selected[$choice] ))
-			else
-				echo "Invalid choice."
-			fi
-			;;
 	esac
 done
+
+clear
 
 echo ""
 echo "Installing selected projects..."
