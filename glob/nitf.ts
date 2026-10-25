@@ -25,7 +25,8 @@ Options:
 	process.exit(0);
 }
 
-const nonInteractive = Bun.argv.includes("--non-interactive") || Bun.argv.includes("-n");
+const nonInteractive =
+	Bun.argv.includes("--non-interactive") || Bun.argv.includes("-n");
 
 function hasFlag(name: string): boolean {
 	return Bun.argv.includes(`--${name}`);
@@ -261,12 +262,12 @@ function generate() {
 	}
 
 	if (hasFlankerDialog) {
-		let html = readFileSync(`index.html`, "utf-8");
+		let html = readFileSync(`public/index.html`, "utf-8");
 		html = html.replace(
 			"</body>",
 			'\t<div id="FD-prompt"></div>\n\t<div id="FD-message"></div>\n\n</body>',
 		);
-		writeFileSync(`index.html`, html);
+		writeFileSync(`public/index.html`, html);
 	}
 
 	const template = hasFlankerDialog

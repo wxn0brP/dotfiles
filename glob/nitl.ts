@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 
 import { $ } from "bun";
-import { cpSync, mkdirSync, readFileSync, writeFileSync } from "fs";
+import { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import * as os from "os";
 import { basename, join, resolve } from "path";
 
@@ -37,6 +37,22 @@ const NIT_USER = process.env.NIT_USER || os.userInfo().username;
 const L_NIT_USER = NIT_USER.toLowerCase();
 const dots = join(process.env.HOME!, "dotfiles", "nit");
 
+function cp(src: string, dest: string) {
+	if (existsSync(dest)) {
+		console.log(`skip: ${dest} already exists`);
+		return;
+	}
+	cpSync(src, dest);
+}
+
+function write(dest: string, content: string) {
+	if (existsSync(dest)) {
+		console.log(`skip: ${dest} already exists`);
+		return;
+	}
+	writeFileSync(dest, content);
+}
+
 mkdirSync(".github/workflows", {
 	recursive: true,
 });
@@ -47,17 +63,17 @@ mkdirSync("src", {
 	recursive: true,
 });
 
-cpSync(
+cp(
 	join(dots, "lib", ".github", "workflows", "build.yml"),
 	".github/workflows/build.yml",
 );
-cpSync(join(dots, "lib", "rusalka", "build.ts"), "rusalka/build.ts");
-cpSync(join(dots, "lib", "tsconfig.json"), "tsconfig.json");
-cpSync(join(dots, "lib", "suglite.json5"), "suglite.json5");
-cpSync(join(dots, "biome.json"), "biome.json");
-cpSync(join(dots, ".gitignore"), ".gitignore");
+cp(join(dots, "lib", "rusalka", "build.ts"), "rusalka/build.ts");
+cp(join(dots, "lib", "tsconfig.json"), "tsconfig.json");
+cp(join(dots, "lib", "suglite.json5"), "suglite.json5");
+cp(join(dots, "biome.json"), "biome.json");
+cp(join(dots, ".gitignore"), ".gitignore");
 
-writeFileSync("src/index.ts", "");
+write("src/index.ts", "");
 
 const pkg = {
 	name: `@${L_NIT_USER}/${pkgName}`,
@@ -99,12 +115,12 @@ const pkg = {
 	},
 };
 
-writeFileSync("package.json", JSON.stringify(pkg, null, "\t") + "\n");
+write("package.json", JSON.stringify(pkg, null, "\t") + "\n");
 
 const license = readFileSync(join(dots, "LICENSE"), "utf-8")
 	.replace(/\$date/g, new Date().getFullYear().toString())
 	.replace(/\$NIT_USER/g, NIT_USER);
-writeFileSync("LICENSE", license);
+write("LICENSE", license);
 
 await $`bun install`;
 await $`bumr`;

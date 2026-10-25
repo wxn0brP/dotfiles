@@ -3,13 +3,13 @@ export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="robbyrussell"
 plugins=(
   git
-  z
   sudo
   zsh-autosuggestions
   zsh-syntax-highlighting
   zsh-npm-scripts-autocomplete
   ollama
 )
+(( $+commands[zoxide] )) || plugins+=(z)
 fpath=(~/.oh-my-zsh/custom/completions ~/dotfiles $fpath)
 source $ZSH/oh-my-zsh.sh
 autoload -Uz colors && colors
@@ -76,3 +76,7 @@ ya () {
 compctl -K _ya_complete ya
 
 autoload -U add-zsh-hook
+
+if (( $+commands[zoxide] )); then
+    eval "$(zoxide init zsh)"
+fi

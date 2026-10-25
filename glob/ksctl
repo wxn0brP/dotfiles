@@ -2,17 +2,46 @@
 
 # ksctl - simple systemctl & journalctl wrapper
 
-HELP="Operations:
+HELP="Usage: ksctl [-u|--user] <unit> <operation> [args...]
+
+Flags:
+  -u, --user    operate on the current user's services (systemctl/journalctl --user)
+
+Operations:
   s=status  r=restart  e=enable  d=disable  t=stop  x=start
   l=logs (args passed to journalctl, default -f)
-  g=grep <pattern> (filter logs)"
+  g=grep <pattern> (filter logs)
+  c=command (print the journalctl command instead of running it)"
 
-if [[ $# -lt 2 ]]; then
-  echo "Usage: ksctl <unit> <operation> [args...]"
+usage() {
   echo "$HELP"
   exit 1
+}
+
+USER_MODE=false
+POSITIONAL=()
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --) shift; POSITIONAL+=("$@"); break ;;
+    -u|--user) USER_MODE=true; shift ;;
+    -h|--help) echo "$HELP"; exit 0 ;;
+    *) POSITIONAL+=("$1"); shift ;;
+  esac
+done
+
+if [[ ${#POSITIONAL[@]} -lt 2 ]]; then
+  usage
 fi
 
+if $USER_MODE; then
+  SCTL=(systemctl --user)
+  JCTL=(journalctl --user)
+else
+  SCTL=(sudo systemctl)
+  JCTL=(journalctl)
+fi
+
+set -- "${POSITIONAL[@]}"
 UNIT=$1
 shift
 OP=$1
@@ -20,28 +49,31 @@ shift
 EXTRA=("$@")
 
 case $OP in
-  s) sudo systemctl status $UNIT ;;
-  r) sudo systemctl restart $UNIT ;;
-  e) sudo systemctl enable $UNIT ;;
-  d) sudo systemctl disable $UNIT ;;
-  t) sudo systemctl stop $UNIT ;;
-  x) sudo systemctl start $UNIT ;;
+  s) "${SCTL[@]}" status "$UNIT" ;;
+  r) "${SCTL[@]}" restart "$UNIT" ;;
+  e) "${SCTL[@]}" enable "$UNIT" ;;
+  d) "${SCTL[@]}" disable "$UNIT" ;;
+  t) "${SCTL[@]}" stop "$UNIT" ;;
+  x) "${SCTL[@]}" start "$UNIT" ;;
   l)
     if [[ ${#EXTRA[@]} -eq 0 ]]; then
-      journalctl -u "$UNIT" -f
+      "${JCTL[@]}" -u "$UNIT" -f
     else
-      journalctl -u "$UNIT" "${EXTRA[@]}"
+      "${JCTL[@]}" -u "$UNIT" "${EXTRA[@]}"
     fi
     ;;
   g)
-    journalctl -u "$UNIT" | grep -- "${EXTRA[@]}"
+    if [[ ${#EXTRA[@]} -eq 0 ]]; then
+      echo "grep requires a pattern" >&2
+      usage
+    fi
+    "${JCTL[@]}" -u "$UNIT" | grep -- "${EXTRA[@]}"
     ;;
-  ll)
-    echo journalctl -u "$UNIT" "${EXTRA[@]}"
+  c|ll)
+    echo "${JCTL[*]} -u $UNIT ${EXTRA[*]}"
     ;;
   *)
-    echo "Unknown operation: $OP"
-    echo "$HELP"
-    exit 1
+    echo "Unknown operation: $OP" >&2
+    usage
     ;;
 esac
