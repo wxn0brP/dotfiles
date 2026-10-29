@@ -39,6 +39,7 @@ install_plugins() {
 	download_plugin "https://github.com/Katrovsky/zsh-ollama-completion" "ollama"
 
 	log "Installing bun completions..."
+	mkdir -p ~/.bun
 	curl -fsSL https://raw.githubusercontent.com/oven-sh/bun/HEAD/completions/bun.zsh > ~/.bun/bun.zsh
 }
 

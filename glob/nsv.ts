@@ -35,11 +35,13 @@ for (const arg of args) {
 			if (/^\d+$/.test(arg)) {
 				increment = parseInt(arg);
 			} else {
-				console.error("Usage: nsv [a|b|p|m] [increment] [-d]");
+				console.error("Usage: nsv [a|b|p|m|ap|bp] [increment] [-d]");
 				console.error("  a = alpha prerelease");
 				console.error("  b = beta prerelease");
 				console.error("  p = patch");
 				console.error("  m = minor");
+				console.error("  ap = minor + alpha");
+				console.error("  bp = minor + beta");
 				console.error("  -d = dry-run");
 				process.exit(1);
 			}

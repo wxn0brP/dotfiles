@@ -131,7 +131,7 @@ Usage: `nits <directory_name> [package_name]`
 
 Bumps the npm package version using `standard-version`. Supports alpha (`a`), beta (`b`), patch (`p`), and minor (`m`) releases with optional increment and dry-run mode.
 
-Usage: `nsv [a|b|p|m] [increment] [-d]`
+Usage: `nsv [a|b|p|m|ap|bp] [increment] [-d]`
 
 ### viol
 
