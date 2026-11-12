@@ -2,12 +2,17 @@ export DISABLE_UPDATE_PROMPT="true"
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="robbyrussell"
 plugins=(
-  git
+  forgit
   sudo
   zsh-autosuggestions
-  zsh-syntax-highlighting
   zsh-npm-scripts-autocomplete
   ollama
+  zsh-you-should-use
+  colored-man-pages
+  extract
+  command-not-found
+  fzf-tab
+  zsh-syntax-highlighting
 )
 (( $+commands[zoxide] )) || plugins+=(z)
 fpath=(~/.oh-my-zsh/custom/completions ~/dotfiles $fpath)
@@ -17,7 +22,6 @@ zstyle ':omz:update' mode auto
 
 setopt APPEND_HISTORY
 setopt SHARE_HISTORY
-setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_SAVE_NO_DUPS
 
@@ -55,27 +59,11 @@ fi
 [ -s "$HOME/.bun/bun.zsh" ] && source "$HOME/.bun/bun.zsh"
 [ -s "$HOME/.zhiva/scripts/_zhiva" ] && source "$HOME/.zhiva/scripts/_zhiva"
 
-_viol_complete() {
-    reply=($(viol --complete) $(ls))
-}
-compctl -K _viol_complete viol
-
-_ya_complete() {
-    local LAST_ARG="${words[-1]}"
-    if [[ ${#LAST_ARG} -lt 4 ]]; then # do not complete short names
-        reply=()
-        return
-    fi
-    local DATA=$(all-the-package-names | grep -- "$LAST_ARG")
-    reply=(${(f)DATA})
-}
-
-ya () {
-    bun add "$@"
-}
-compctl -K _ya_complete ya
-
 autoload -U add-zsh-hook
+
+if (( $+commands[pay-respects] )); then
+    eval "$(pay-respects zsh --alias)"
+fi
 
 if (( $+commands[zoxide] )); then
     eval "$(zoxide init zsh)"

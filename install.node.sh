@@ -1,14 +1,23 @@
 #!/usr/bin/env zsh
-set -e
+set -euo pipefail
 
-if [ -d "$HOME/.nvm" ]; then
-    log "Node already installed"
-    exit 0
+NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+
+echo "[*] Installing Node.js (latest)..."
+
+if ! (( $+commands[curl] )); then
+	echo "[!] curl is required" >&2
+	exit 2
 fi
 
-echo "[*] Installing Node..."
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-source ~/.nvm/nvm.sh
-nvm install 25
-nvm use 25
-source ~/.zshrc
+if [[ ! -s "$NVM_DIR/nvm.sh" ]]; then
+	echo "[*] Installing nvm..."
+	curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+fi
+
+export NVM_DIR
+source "$NVM_DIR/nvm.sh"
+
+nvm install node
+nvm alias default node
+nvm use node

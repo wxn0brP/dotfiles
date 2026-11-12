@@ -1,0 +1,12 @@
+#compdef ya
+
+_ya() {
+	if [[ ${#PREFIX} -lt 4 ]]; then # do not complete short names
+		return
+	fi
+	local -a pkgs
+	pkgs=(${(f)"$(all-the-package-names 2>/dev/null | grep -- "$PREFIX")"})
+	compadd -a pkgs
+}
+
+_ya "$@"

@@ -1,0 +1,10 @@
+#compdef viol
+
+_viol() {
+	local -a cands
+	cands=(${(f)"$(viol --complete 2>/dev/null)"})
+	cands+=(${(f)"$(ls)"})
+	compadd -- $cands
+}
+
+_viol "$@"
