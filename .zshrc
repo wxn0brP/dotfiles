@@ -13,6 +13,7 @@ plugins=(
   command-not-found
   fzf-tab
   zsh-syntax-highlighting
+  undollar
 )
 (( $+commands[zoxide] )) || plugins+=(z)
 fpath=(~/.oh-my-zsh/custom/completions ~/dotfiles $fpath)

@@ -71,7 +71,8 @@ install_plugins() {
 	download_plugin "https://github.com/Katrovsky/zsh-ollama-completion" "ollama"
 	download_plugin "https://github.com/MichaelAquilina/zsh-you-should-use" "zsh-you-should-use"
 	download_plugin "https://github.com/Aloxaf/fzf-tab" "fzf-tab"
-	download_plugin "https://github.com/wfxr/forgit.git" "forgit"
+	download_plugin "https://github.com/wfxr/forgit" "forgit"
+	download_plugin "https://github.com/zpm-zsh/undollar" "undollar"
 
 	log "Installing bun completions..."
 	mkdir -p "$HOME/.bun"
